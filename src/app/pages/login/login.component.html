@@ -1,0 +1,28 @@
+<div class="container d-flex justify-content-center align-items-center login-container">
+    <div class="col-4">
+        <div class="card shadow round mt-5">
+            <div class="card-header text-center">
+                <img src="assets/logo.png" width="100px" height="100px" class="img-fluid mb-3" alt="Feminine Beauty Logo">
+                <h3>Feminine Beauty</h3>
+            </div>
+            <div class="card-body">
+                <form (ngSubmit)="onLogin()">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Usuário</label>
+                        <input type="text" id="username" [(ngModel)]="username" name="username" class="form-control"
+                            required placeholder="Informe seu usuário">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Senha</label>
+                        <input type="password" id="password" [(ngModel)]="password" name="password" class="form-control"
+                            required placeholder="Informe sua senha">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                <a routerLink="/register" class="link-primary">Cadastrar-se</a>
+            </div>
+        </div>
+    </div>
+</div>
