@@ -12,14 +12,18 @@ export const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [authGuard],
+    children: [
+      {
+        path: 'servicos',
+        component: ServicosComponent,
+      },
+      {
+        path: 'funcionarios',
+        component: FuncionariosComponent,
+      },
+    ],
   },
-  { path: 'servicos', component: ServicosComponent, canActivate: [authGuard] },
-  {
-    path: 'funcionarios',
-    component: FuncionariosComponent,
-    canActivate: [authGuard],
-  },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login' },
 ];
 
 @NgModule({

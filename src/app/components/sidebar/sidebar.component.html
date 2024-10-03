@@ -1,0 +1,68 @@
+<div class="container-fluid">
+  <div class="row flex-nowrap">
+    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+      <div
+        class="d-flex flex-column align-items-center pt-2 text-white min-vh-100"
+      >
+        <a
+          href="/dashboard"
+          class="d-flex flex-column align-items-center text-center text-white text-decoration-none"
+        >
+          <img
+            src="assets/logo.png"
+            width="45px"
+            height="45px"
+            alt="Feminine Beauty"
+          />
+          <h3>Feminine Beauty</h3>
+        </a>
+        <ul
+          class="d-flex w-100 nav nav-pills flex-column mb-sm-auto mt-4 gap-2 mb-0 align-items-center"
+        >
+          <li>
+            <a href="/dashboard/servicos" class="nav-link">
+              <span class="d-none d-sm-inline">Serviços</span></a
+            >
+          </li>
+          <li>
+            <a href="/dashboard/funcionarios" class="nav-link">
+              <span class="d-none d-sm-inline">Funcionários</span></a
+            >
+          </li>
+        </ul>
+        <div class="d-flex align-items-center justify-content-center mb-4 mt-2">
+          <a
+            href="#"
+            class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+            data-bs-toggle="dropdown"
+          >
+            <img
+              src="https://avatar.iran.liara.run/public"
+              alt="Perfil"
+              width="30"
+              height="30"
+              class="rounded-circle"
+            />
+            <span class="d-none d-sm-inline mx-2"
+              >{{ userInfo.sub }} | {{ userInfo.role }}</span
+            >
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li>
+              <a class="dropdown-item" href="/dashboard/perfil">Perfil</a>
+            </li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li>
+              <a class="dropdown-item" (click)="authService.logout()">Sair</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col py-3">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>
