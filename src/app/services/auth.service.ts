@@ -9,7 +9,6 @@ import { Observable } from 'rxjs';
 export class AuthService {
 
   private apiUrl = 'http://localhost:8080/auth';
-  private isAuthenticated = false;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -19,7 +18,6 @@ export class AuthService {
 
   handleLogin(token: string): void {
     localStorage.setItem('token', token);
-    this.isAuthenticated = true;
     this.router.navigate(['/dashboard']);
   }
 
@@ -34,9 +32,7 @@ export class AuthService {
 
   private isTokenExpired(token: string): boolean {
     const payload = this.parseJwt(token);
-    console.log(payload)
     const expiration = payload?.exp ? payload.exp * 1000 : 0;
-    console.log(new Date(expiration));
     return Date.now() >= expiration;
   }
 
