@@ -8,8 +8,6 @@ export class ServicosService {
   private servicos: Servico[] = [];
 
   getServicos(): Servico[] {
-    const servico = new Servico('123', 123, 123, true);
-    this.servicos.push(servico);
     return this.servicos;
   }
 
