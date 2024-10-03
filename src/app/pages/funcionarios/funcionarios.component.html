@@ -1,0 +1,181 @@
+<div class="container mt-5">
+  <h2 class="mb-4">Funcionários</h2>
+  <button
+    class="btn btn-primary mb-4"
+    data-bs-toggle="modal"
+    data-bs-target="#funcionarioModal"
+  >
+    Adicionar Funcionário
+  </button>
+
+  <div
+    class="modal fade"
+    id="funcionarioModal"
+    tabindex="-1"
+    aria-labelledby="funcionarioModalLabel"
+    aria-hidden="true"
+    #funcionarioModal
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="funcionarioModalLabel">
+            {{
+              editIndex === null
+                ? "Adicionar Funcionário"
+                : "Editar Funcionário"
+            }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="nome" class="form-label">Nome</label>
+              <input
+                type="text"
+                class="form-control"
+                id="nome"
+                [(ngModel)]="nome"
+                name="nome"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                [(ngModel)]="email"
+                name="email"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="telefone" class="form-label">Telefone</label>
+              <input
+                type="text"
+                class="form-control"
+                id="telefone"
+                [(ngModel)]="telefone"
+                name="telefone"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="cpf" class="form-label">CPF</label>
+              <input
+                type="text"
+                class="form-control"
+                id="cpf"
+                [(ngModel)]="cpf"
+                name="cpf"
+                required
+              />
+            </div>
+            <div class="form-check mb-3">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="ativo"
+                [(ngModel)]="ativo"
+                name="ativo"
+              />
+              <label class="form-check-label" for="ativo">Ativo</label>
+            </div>
+            <div class="mb-3">
+              <label for="servicos" class="form-label">Serviços</label>
+              <div class="input-group">
+                <select
+                  class="form-select"
+                  id="servicos"
+                  [(ngModel)]="selectedServico"
+                  name="selectedServico"
+                >
+                  <option *ngFor="let servico of servicos" [ngValue]="servico">
+                    {{ servico.descricao }}
+                  </option>
+                </select>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="addServico()"
+                >
+                  Adicionar Serviço
+                </button>
+              </div>
+              <ul class="list-group mt-2">
+                <li
+                  class="list-group-item"
+                  *ngFor="let servico of selectedServicos"
+                >
+                  {{ servico.descricao }}
+                  <button
+                    type="button"
+                    class="btn btn-danger btn-sm float-end"
+                    (click)="removeServico(servico)"
+                  >
+                    Remover
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+              >
+                {{ editIndex === null ? "Adicionar" : "Atualizar" }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-striped table-custom">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Telefone</th>
+        <th>CPF</th>
+        <th>Ativo</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="funcionarios.length === 0">
+        <td colspan="7" class="text-center">Não há funcionários cadastrados</td>
+      </tr>
+      <tr *ngFor="let funcionario of funcionarios; let i = index">
+        <td>{{ funcionario.nome }}</td>
+        <td>{{ funcionario.email }}</td>
+        <td>{{ funcionario.telefone }}</td>
+        <td>{{ funcionario.cpf }}</td>
+        <td>{{ funcionario.ativo ? "Ativo" : "Inativo" }}</td>
+        <td>
+          <button
+            class="btn btn-secondary btn-sm me-2"
+            (click)="onEdit(i)"
+            data-bs-toggle="modal"
+            data-bs-target="#funcionarioModal"
+          >
+            Editar
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="onDelete(i)">
+            Deletar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

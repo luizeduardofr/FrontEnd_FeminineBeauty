@@ -1,0 +1,127 @@
+<div class="container mt-5">
+  <h2 class="mb-4">Serviços</h2>
+  <button
+    class="btn btn-primary mb-4"
+    data-bs-toggle="modal"
+    data-bs-target="#servicoModal"
+  >
+    Adicionar Serviço
+  </button>
+
+  <div
+    class="modal fade"
+    id="servicoModal"
+    tabindex="-1"
+    aria-labelledby="servicoModalLabel"
+    aria-hidden="true"
+    #servicoModal
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="servicoModalLabel">
+            {{ editIndex === null ? "Adicionar Serviço" : "Editar Serviço" }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="descricao" class="form-label">Descrição</label>
+              <input
+                type="text"
+                class="form-control"
+                id="descricao"
+                [(ngModel)]="descricao"
+                name="descricao"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="preco" class="form-label">Preço</label>
+              <input
+                type="number"
+                class="form-control"
+                id="preco"
+                [(ngModel)]="preco"
+                name="preco"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="duracao" class="form-label">Duração (min)</label>
+              <input
+                type="number"
+                class="form-control"
+                id="duracao"
+                [(ngModel)]="duracao"
+                name="duracao"
+                required
+              />
+            </div>
+            <div class="form-check mb-3">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="ativo"
+                [(ngModel)]="ativo"
+                name="ativo"
+              />
+              <label class="form-check-label" for="ativo">Ativo</label>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+              >
+                {{ editIndex === null ? "Adicionar" : "Atualizar" }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Descrição</th>
+        <th scope="col">Preço</th>
+        <th scope="col">Duração</th>
+        <th scope="col">Status</th>
+        <th scope="col">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="servicos.length === 0">
+        <td colspan="5" class="text-center">Não há serviços cadastrados</td>
+      </tr>
+      <tr *ngFor="let servico of servicos; let i = index">
+        <td>{{ servico.descricao }}</td>
+        <td>{{ servico.preco }}</td>
+        <td>{{ servico.duracao }} min</td>
+        <td>{{ servico.ativo ? "Ativo" : "Inativo" }}</td>
+        <td>
+          <button
+            class="btn btn-secondary btn-sm me-2"
+            (click)="onEdit(i)"
+            data-bs-toggle="modal"
+            data-bs-target="#servicoModal"
+          >
+            Editar
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="onDelete(i)">
+            Deletar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
