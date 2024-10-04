@@ -1,25 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Funcionario } from '../models/funcionario';
+import { HttpClient } from '@angular/common/http';
+import { PageableResponse } from '../models/pageableResponse';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FuncionariosService {
-  private funcionarios: Funcionario[] = [];
+  private apiUrl = 'http://localhost:8080/funcionarios';
 
-  getFuncionarios(): Funcionario[] {
-    return this.funcionarios;
+  constructor(private http: HttpClient) {}
+
+  getFuncionarios(): Observable<PageableResponse<Funcionario>> {
+    return this.http.get<PageableResponse<Funcionario>>(`${this.apiUrl}`);
   }
 
-  addFuncionario(funcionario: Funcionario): void {
-    this.funcionarios.push(funcionario);
+  addFuncionario(funcionario: Funcionario): Observable<Funcionario> {
+    return this.http.post<Funcionario>(`${this.apiUrl}`, funcionario);
   }
 
-  updateFuncionario(index: number, funcionario: Funcionario): void {
-    this.funcionarios[index] = funcionario;
+  updateFuncionario(funcionario: Funcionario): Observable<Funcionario> {
+    return this.http.put<Funcionario>(`${this.apiUrl}`, funcionario);
   }
 
-  deleteFuncionario(index: number): void {
-    this.funcionarios.splice(index, 1);
+  deleteFuncionario(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

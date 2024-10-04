@@ -20,7 +20,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="servicoModalLabel">
-            {{ editIndex === null ? "Adicionar Serviço" : "Editar Serviço" }}
+            {{ !id ? "Adicionar Serviço" : "Editar Serviço" }}
           </h5>
           <button
             type="button"
@@ -80,7 +80,7 @@
                 class="btn btn-primary"
                 data-bs-dismiss="modal"
               >
-                {{ editIndex === null ? "Adicionar" : "Atualizar" }}
+                {{ !id ? "Adicionar" : "Atualizar" }}
               </button>
             </div>
           </form>
@@ -111,13 +111,13 @@
         <td>
           <button
             class="btn btn-secondary btn-sm me-2"
-            (click)="onEdit(i)"
+            (click)="onEdit(servico)"
             data-bs-toggle="modal"
             data-bs-target="#servicoModal"
           >
             Editar
           </button>
-          <button class="btn btn-danger btn-sm" (click)="onDelete(i)">
+          <button class="btn btn-danger btn-sm" (click)="onDelete(servico.id)">
             Deletar
           </button>
         </td>

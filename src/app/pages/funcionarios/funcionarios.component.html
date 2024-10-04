@@ -4,6 +4,7 @@
     class="btn btn-primary mb-4"
     data-bs-toggle="modal"
     data-bs-target="#funcionarioModal"
+    (click)="resetForm()"
   >
     Adicionar Funcionário
   </button>
@@ -16,17 +17,14 @@
     aria-hidden="true"
     #funcionarioModal
   >
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="funcionarioModalLabel">
-            {{
-              editIndex === null
-                ? "Adicionar Funcionário"
-                : "Editar Funcionário"
-            }}
+            {{ !id ? "Adicionar Funcionário" : "Editar Funcionário" }}
           </h5>
           <button
+            #closeModal
             type="button"
             class="btn-close"
             data-bs-dismiss="modal"
@@ -35,107 +33,230 @@
         </div>
         <div class="modal-body">
           <form (ngSubmit)="onSubmit()">
-            <div class="mb-3">
-              <label for="nome" class="form-label">Nome</label>
-              <input
-                type="text"
-                class="form-control"
-                id="nome"
-                [(ngModel)]="nome"
-                name="nome"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                [(ngModel)]="email"
-                name="email"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <label for="telefone" class="form-label">Telefone</label>
-              <input
-                type="text"
-                class="form-control"
-                id="telefone"
-                [(ngModel)]="telefone"
-                name="telefone"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <label for="cpf" class="form-label">CPF</label>
-              <input
-                type="text"
-                class="form-control"
-                id="cpf"
-                [(ngModel)]="cpf"
-                name="cpf"
-                required
-              />
-            </div>
-            <div class="form-check mb-3">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="ativo"
-                [(ngModel)]="ativo"
-                name="ativo"
-              />
-              <label class="form-check-label" for="ativo">Ativo</label>
-            </div>
-            <div class="mb-3">
-              <label for="servicos" class="form-label">Serviços</label>
-              <div class="input-group">
-                <select
-                  class="form-select"
-                  id="servicos"
-                  [(ngModel)]="selectedServico"
-                  name="selectedServico"
-                >
-                  <option *ngFor="let servico of servicos" [ngValue]="servico">
-                    {{ servico.descricao }}
-                  </option>
-                </select>
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  (click)="addServico()"
-                >
-                  Adicionar Serviço
-                </button>
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-subtitle mb-3 text-muted">
+                  Informações pessoais
+                </h5>
+                <div class="mb-3">
+                  <label for="nome" class="form-label">Nome</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nome"
+                    [(ngModel)]="nome"
+                    name="nome"
+                    required
+                    (blur)="onLoginBlur()"
+                  />
+                  <div *ngIf="errors['nome']" class="text-danger">
+                    {{ errors["nome"] }}
+                  </div>
+                </div>
+                <div class="mb-3" *ngIf="!id">
+                  <label for="login" class="form-label">Login</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="login"
+                    [(ngModel)]="login"
+                    name="login"
+                    required
+                  />
+                  <div *ngIf="errors['login']" class="text-danger">
+                    {{ errors["login"] }}
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="email"
+                    [(ngModel)]="email"
+                    name="email"
+                    mask="A*@A*.SSS"
+                    [dropSpecialCharacters]="false"
+                    required
+                  />
+                  <div *ngIf="errors['email']" class="text-danger">
+                    {{ errors["email"] }}
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="telefone" class="form-label">Telefone</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="telefone"
+                    [(ngModel)]="telefone"
+                    name="telefone"
+                    mask="(00) 00000-0000"
+                    [dropSpecialCharacters]="false"
+                    required
+                  />
+                  <div *ngIf="errors['telefone']" class="text-danger">
+                    {{ errors["telefone"] }}
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="cpf" class="form-label">CPF</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cpf"
+                    [(ngModel)]="cpf"
+                    name="cpf"
+                    mask="000.000.000-00"
+                    [dropSpecialCharacters]="false"
+                    required
+                  />
+                  <div *ngIf="errors['cpf']" class="text-danger">
+                    {{ errors["cpf"] }}
+                  </div>
+                </div>
+                <div class="form-check mb-3">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="ativo"
+                    [(ngModel)]="ativo"
+                    name="ativo"
+                  />
+                  <label class="form-check-label" for="ativo">Ativo</label>
+                </div>
               </div>
-              <ul class="list-group mt-2">
-                <li
-                  class="list-group-item"
-                  *ngFor="let servico of selectedServicos"
-                >
-                  {{ servico.descricao }}
+            </div>
+            <div class="card mt-3">
+              <div class="card-body">
+                <h5 class="card-subtitle mb-3 text-muted">Endereço</h5>
+                <div class="mb-3">
+                  <label for="logradouro" class="form-label">Logradouro</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="logradouro"
+                    [(ngModel)]="endereco.logradouro"
+                    name="logradouro"
+                    required
+                  />
+                  <div
+                    *ngIf="errors['endereco.logradouro']"
+                    class="text-danger"
+                  >
+                    {{ errors["endereco.logradouro"] }}
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="bairro" class="form-label">Bairro</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="bairro"
+                    [(ngModel)]="endereco.bairro"
+                    name="bairro"
+                    required
+                  />
+                  <div *ngIf="errors['endereco.bairro']" class="text-danger">
+                    {{ errors["endereco.bairro"] }}
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="cep" class="form-label">CEP</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cep"
+                    [(ngModel)]="endereco.cep"
+                    name="cep"
+                    mask="00000-000"
+                    [dropSpecialCharacters]="false"
+                    required
+                  />
+                  <div *ngIf="errors['endereco.cep']" class="text-danger">
+                    {{ errors["endereco.cep"] }}
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="cidade" class="form-label">Cidade</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cidade"
+                    [(ngModel)]="endereco.cidade"
+                    name="cidade"
+                    required
+                  />
+                  <div *ngIf="errors['endereco.cidade']" class="text-danger">
+                    {{ errors["endereco.cidade"] }}
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="uf" class="form-label">UF</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="uf"
+                    [(ngModel)]="endereco.uf"
+                    name="uf"
+                    mask="SS"
+                    required
+                    style="text-transform: uppercase"
+                  />
+                  <div *ngIf="errors['endereco.uf']" class="text-danger">
+                    {{ errors["endereco.uf"] }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card mt-3">
+              <div class="card-body">
+                <h5 class="card-subtitle mb-3 text-muted">Serviços</h5>
+                <div class="input-group">
+                  <select
+                    class="form-select"
+                    id="servicos"
+                    [(ngModel)]="selectedServico"
+                    name="selectedServico"
+                  >
+                    <option
+                      *ngFor="let servico of servicos"
+                      [ngValue]="servico"
+                    >
+                      {{ servico.descricao }}
+                    </option>
+                  </select>
                   <button
                     type="button"
-                    class="btn btn-danger btn-sm float-end"
-                    (click)="removeServico(servico)"
+                    class="btn btn-secondary"
+                    (click)="addServico()"
                   >
-                    Remover
+                    Adicionar Serviço
                   </button>
-                </li>
-              </ul>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="submit"
-                class="btn btn-primary"
-                data-bs-dismiss="modal"
-              >
-                {{ editIndex === null ? "Adicionar" : "Atualizar" }}
-              </button>
+                </div>
+                <ul class="list-group mt-2">
+                  <li
+                    class="list-group-item"
+                    *ngFor="let servico of selectedServicos"
+                  >
+                    {{ servico.descricao }}
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm float-end"
+                      (click)="removeServico(servico)"
+                    >
+                      Remover
+                    </button>
+                  </li>
+                </ul>
+              </div>
             </div>
           </form>
+        </div>
+        <div class="modal-footer">
+          <button (click)="onSubmit()" class="btn btn-primary">
+            {{ !id ? "Adicionar" : "Atualizar" }}
+          </button>
         </div>
       </div>
     </div>
@@ -165,7 +286,7 @@
         <td>
           <button
             class="btn btn-secondary btn-sm me-2"
-            (click)="onEdit(i)"
+            (click)="onEdit(funcionario)"
             data-bs-toggle="modal"
             data-bs-target="#funcionarioModal"
           >

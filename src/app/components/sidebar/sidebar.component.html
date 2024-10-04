@@ -43,9 +43,15 @@
               height="30"
               class="rounded-circle"
             />
-            <span class="d-none d-sm-inline mx-2"
-              >{{ userInfo.sub }} | {{ userInfo.role }}</span
-            >
+            <div class="d-flex flex-column mx-3 text-center">
+              <span
+                class="w-100 d-none d-sm-inline p-2 border-bottom border-white"
+                >{{ userInfo.sub }}</span
+              >
+              <span class="d-none d-sm-inline p-1">
+                {{ userInfo.role }}
+              </span>
+            </div>
           </a>
           <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
             <li>

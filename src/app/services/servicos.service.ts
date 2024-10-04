@@ -1,25 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Servico } from '../models/servico';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { PageableResponse } from '../models/pageableResponse';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServicosService {
-  private servicos: Servico[] = [];
+  private apiUrl = 'http://localhost:8080/servicos';
 
-  getServicos(): Servico[] {
-    return this.servicos;
+  constructor(private http: HttpClient) {}
+
+  getServicos(): Observable<PageableResponse<Servico>> {
+    return this.http.get<PageableResponse<Servico>>(`${this.apiUrl}`);
   }
 
-  addServico(servico: Servico): void {
-    this.servicos.push(servico);
+  addServico(servico: Servico): Observable<Servico> {
+    return this.http.post<Servico>(`${this.apiUrl}`, servico);
   }
 
-  updateServico(index: number, servico: Servico): void {
-    this.servicos[index] = servico;
+  updateServico(servico: Servico): Observable<Servico> {
+    return this.http.put<Servico>(`${this.apiUrl}`, servico);
   }
 
-  deleteServico(index: number): void {
-    this.servicos.splice(index, 1);
+  deleteServico(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

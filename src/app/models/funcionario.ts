@@ -1,12 +1,15 @@
+import { Endereco } from './endereco';
 import { Servico } from './servico';
 
-export class Funcionario {
-  constructor(
-    public nome: string,
-    public email: string,
-    public telefone: string,
-    public cpf: string,
-    public ativo: boolean,
-    public servicos: Servico[]
-  ) {}
+export interface Funcionario {
+  id?: number;
+  login?: string;
+  senha?: string;
+  nome: string;
+  email: string;
+  telefone: string;
+  cpf: string;
+  ativo: boolean;
+  endereco: Endereco;
+  servicos: Servico[];
 }
