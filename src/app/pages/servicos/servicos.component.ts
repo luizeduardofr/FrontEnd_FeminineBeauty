@@ -1,18 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ServicosService } from '../../services/servicos.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { Servico } from '../../models/servico';
+import { NgxMaskDirective } from 'ngx-mask';
+import { CurrencyBrPipe } from '../../pipes/currency-br.pipe';
 
 @Component({
   selector: 'app-servicos',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, NgxMaskDirective, CurrencyBrPipe],
   templateUrl: './servicos.component.html',
   styleUrls: ['./servicos.component.scss'],
 })
 export class ServicosComponent implements OnInit {
+  @ViewChild('closeModal') closeModal!: ElementRef;
+
   servicos: Servico[] = [];
   descricao: string = '';
   preco: number = 0;
@@ -20,10 +24,12 @@ export class ServicosComponent implements OnInit {
   ativo: boolean = false;
   id?: number;
 
+  errors: { [key: string]: string } = {};
+
   constructor(
     private servicosService: ServicosService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.servicosService.getServicos().subscribe({
@@ -34,6 +40,7 @@ export class ServicosComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.errors = {};
     const newServico: Servico = {
       id: this.id,
       descricao: this.descricao,
@@ -44,27 +51,41 @@ export class ServicosComponent implements OnInit {
     if (this.id === undefined) {
       this.servicosService.addServico(newServico).subscribe({
         next: (response) => {
+          this.resetForm();
           this.servicos.push(response);
           this.toastr.success('Serviço adicionado com sucesso!', 'Sucesso');
         },
-        error: () =>
-          this.toastr.error('Não foi possível adicionar o serviço!', 'Erro'),
+        error: (err) => {
+          this.toastr.error('Não foi possível adicionar o serviço!', 'Erro');
+          this.setErrors(err.error);
+        },
       });
     } else {
       this.servicosService.updateServico(newServico).subscribe({
         next: (response) => {
+          this.resetForm();
           const index = this.servicos.findIndex((ser) => ser.id == response.id);
           this.servicos.splice(index, 1, response);
           this.toastr.success('Serviço atualizado com sucesso!', 'Sucesso');
         },
-        error: () =>
-          this.toastr.error('Não foi possível atualizar o serviço!', 'Erro'),
+        error: (err) => {
+          this.toastr.error('Não foi possível atualizar o serviço!', 'Erro');
+          this.setErrors(err.error);
+        },
       });
     }
-    this.resetForm();
+  }
+
+  setErrors(errorPayload: any): void {
+    this.errors = {};
+    errorPayload.forEach((error: { campo: string; mensagem: string }) => {
+      this.errors[error.campo] = error.mensagem;
+    });
   }
 
   onEdit(editServico: Servico): void {
+    this.closeModal.nativeElement.click();
+    this.errors = {};
     this.id = editServico.id;
     this.descricao = editServico.descricao;
     this.preco = editServico.preco;

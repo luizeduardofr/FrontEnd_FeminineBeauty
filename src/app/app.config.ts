@@ -11,7 +11,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { TokenInterceptor } from './interceptors/token.interceptor';
-import { provideEnvironmentNgxMask, provideNgxMask } from 'ngx-mask';
+import { provideNgxMask } from 'ngx-mask';
 
 export const appConfig: ApplicationConfig = {
   providers: [

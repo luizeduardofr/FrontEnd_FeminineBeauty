@@ -55,6 +55,7 @@ export class FuncionariosComponent implements OnInit {
 
   onSubmit(): void {
     this.errors = {};
+    this.endereco.uf = this.endereco.uf.toUpperCase();
     const newFuncionario: Funcionario = {
       id: this.id,
       nome: this.nome,
@@ -148,7 +149,6 @@ export class FuncionariosComponent implements OnInit {
     this.selectedServicos = [];
     this.selectedServico = undefined;
     this.errors = {};
-    this.closeModal.nativeElement.click();
   }
 
   onLoginBlur() {
