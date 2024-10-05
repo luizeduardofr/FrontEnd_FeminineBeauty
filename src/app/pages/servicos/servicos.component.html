@@ -1,46 +1,92 @@
 <div class="container mt-5">
-  <h2 class="mb-4">Serviços</h2>
-  <button class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#servicoModal" (click)="resetForm()">
+  <h2 class="mb-4 text-dark">Serviços</h2>
+  <button
+    class="btn btn-primary mb-4"
+    data-bs-toggle="modal"
+    data-bs-target="#servicoModal"
+    (click)="resetForm()"
+  >
     Adicionar Serviço
   </button>
 
-  <div class="modal fade" id="servicoModal" tabindex="-1" aria-labelledby="servicoModalLabel" aria-hidden="true"
-    #servicoModal>
+  <div
+    class="modal fade"
+    id="servicoModal"
+    tabindex="-1"
+    aria-labelledby="servicoModalLabel"
+    aria-hidden="true"
+    #servicoModal
+  >
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="servicoModalLabel">
             {{ !id ? "Adicionar Serviço" : "Editar Serviço" }}
           </h5>
-          <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            #closeModal
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <form (ngSubmit)="onSubmit()">
             <div class="mb-3">
               <label for="descricao" class="form-label">Descrição</label>
-              <input type="text" class="form-control" id="descricao" [(ngModel)]="descricao" name="descricao"
-                required />
+              <input
+                type="text"
+                class="form-control"
+                id="descricao"
+                [(ngModel)]="descricao"
+                name="descricao"
+                required
+              />
               <div *ngIf="errors['descricao']" class="text-danger">
                 {{ errors["descricao"] }}
               </div>
             </div>
             <div class="mb-3">
               <label for="preco" class="form-label">Preço</label>
-              <input type="text" class="form-control" id="preco" [(ngModel)]="preco" name="preco" mask="separator.2"
-                thousandSeparator="." decimalMarker="," prefix="R$ " required />
+              <input
+                type="text"
+                class="form-control"
+                id="preco"
+                [(ngModel)]="preco"
+                name="preco"
+                mask="separator.2"
+                thousandSeparator="."
+                decimalMarker=","
+                prefix="R$ "
+                required
+              />
               <div *ngIf="errors['preco']" class="text-danger">
                 {{ errors["preco"] }}
               </div>
             </div>
             <div class="mb-3">
               <label for="duracao" class="form-label">Duração (min)</label>
-              <input type="number" class="form-control" id="duracao" [(ngModel)]="duracao" name="duracao" required />
+              <input
+                type="number"
+                class="form-control"
+                id="duracao"
+                [(ngModel)]="duracao"
+                name="duracao"
+                required
+              />
               <div *ngIf="errors['duracao']" class="text-danger">
                 {{ errors["duracao"] }}
               </div>
             </div>
             <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="ativo" [(ngModel)]="ativo" name="ativo" />
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="ativo"
+                [(ngModel)]="ativo"
+                name="ativo"
+              />
               <label class="form-check-label" for="ativo">Ativo</label>
               <div *ngIf="errors['ativo']" class="text-danger">
                 {{ errors["ativo"] }}
@@ -77,8 +123,12 @@
         <td>{{ servico.duracao }} min</td>
         <td>{{ servico.ativo ? "Ativo" : "Inativo" }}</td>
         <td>
-          <button class="btn btn-secondary btn-sm me-2" (click)="onEdit(servico)" data-bs-toggle="modal"
-            data-bs-target="#servicoModal">
+          <button
+            class="btn btn-secondary btn-sm me-2"
+            (click)="onEdit(servico)"
+            data-bs-toggle="modal"
+            data-bs-target="#servicoModal"
+          >
             Editar
           </button>
           <button class="btn btn-danger btn-sm" (click)="onDelete(servico.id)">
@@ -88,4 +138,8 @@
       </tr>
     </tbody>
   </table>
+  <app-navigation
+    (load)="loadServicos($event)"
+    [totalPages]="totalPages"
+  ></app-navigation>
 </div>

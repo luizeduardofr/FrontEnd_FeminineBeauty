@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <h2 class="mb-4">Funcionários</h2>
+  <h2 class="mb-4 text-dark">Funcionários</h2>
   <button
     class="btn btn-primary mb-4"
     data-bs-toggle="modal"
@@ -299,4 +299,8 @@
       </tr>
     </tbody>
   </table>
+  <app-navigation
+    (load)="loadFuncionarios($event)"
+    [totalPages]="totalPages"
+  ></app-navigation>
 </div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Servico } from '../models/servico';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PageableResponse } from '../models/pageableResponse';
 
@@ -12,8 +12,14 @@ export class ServicosService {
 
   constructor(private http: HttpClient) {}
 
-  getServicos(): Observable<PageableResponse<Servico>> {
-    return this.http.get<PageableResponse<Servico>>(`${this.apiUrl}`);
+  getServicos(
+    page: number,
+    size: number
+  ): Observable<PageableResponse<Servico>> {
+    let params = new HttpParams().set('page', page).set('size', size);
+    return this.http.get<PageableResponse<Servico>>(`${this.apiUrl}`, {
+      params,
+    });
   }
 
   addServico(servico: Servico): Observable<Servico> {

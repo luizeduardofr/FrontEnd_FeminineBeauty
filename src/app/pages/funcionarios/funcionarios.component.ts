@@ -8,11 +8,12 @@ import { ToastrService } from 'ngx-toastr';
 import { Funcionario } from '../../models/funcionario';
 import { Endereco } from '../../models/endereco';
 import { NgxMaskDirective } from 'ngx-mask';
+import { NavigationComponent } from '../../components/navigation/navigation.component';
 
 @Component({
   selector: 'app-funcionarios',
   standalone: true,
-  imports: [FormsModule, CommonModule, NgxMaskDirective],
+  imports: [FormsModule, CommonModule, NgxMaskDirective, NavigationComponent],
   templateUrl: './funcionarios.component.html',
   styleUrls: ['./funcionarios.component.scss'],
 })
@@ -20,6 +21,8 @@ export class FuncionariosComponent implements OnInit {
   @ViewChild('closeModal') closeModal!: ElementRef;
 
   funcionarios: Funcionario[] = [];
+  totalPages: number = 0;
+
   login?: string = '';
   nome: string = '';
   email: string = '';
@@ -41,15 +44,22 @@ export class FuncionariosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.funcionariosService.getFuncionarios().subscribe({
-      next: (response) => (this.funcionarios = response.content),
-      error: () =>
-        this.toastr.error('Não foi possível buscar os funcionários!', 'Erro'),
-    });
-    this.servicosService.getServicos().subscribe({
+    this.loadFuncionarios();
+    this.servicosService.getServicos(0, 999).subscribe({
       next: (response) => (this.servicos = response.content),
       error: () =>
         this.toastr.error('Não foi possível buscar os serviços!', 'Erro'),
+    });
+  }
+
+  loadFuncionarios(currentPage: number = 0): void {
+    this.funcionariosService.getFuncionarios(currentPage, 10).subscribe({
+      next: (response) => {
+        this.funcionarios = response.content;
+        this.totalPages = response.totalPages;
+      },
+      error: () =>
+        this.toastr.error('Não foi possível buscar os funcionários!', 'Erro'),
     });
   }
 

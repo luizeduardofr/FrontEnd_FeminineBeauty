@@ -6,11 +6,18 @@ import { ToastrService } from 'ngx-toastr';
 import { Servico } from '../../models/servico';
 import { NgxMaskDirective } from 'ngx-mask';
 import { CurrencyBrPipe } from '../../pipes/currency-br.pipe';
+import { NavigationComponent } from '../../components/navigation/navigation.component';
 
 @Component({
   selector: 'app-servicos',
   standalone: true,
-  imports: [FormsModule, CommonModule, NgxMaskDirective, CurrencyBrPipe],
+  imports: [
+    FormsModule,
+    CommonModule,
+    NgxMaskDirective,
+    CurrencyBrPipe,
+    NavigationComponent,
+  ],
   templateUrl: './servicos.component.html',
   styleUrls: ['./servicos.component.scss'],
 })
@@ -18,6 +25,8 @@ export class ServicosComponent implements OnInit {
   @ViewChild('closeModal') closeModal!: ElementRef;
 
   servicos: Servico[] = [];
+  totalPages: number = 0;
+
   descricao: string = '';
   preco: number = 0;
   duracao: number = 0;
@@ -29,13 +38,20 @@ export class ServicosComponent implements OnInit {
   constructor(
     private servicosService: ServicosService,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.servicosService.getServicos().subscribe({
-      next: (response) => (this.servicos = response.content),
+    this.loadServicos();
+  }
+
+  loadServicos(currentPage: number = 0): void {
+    this.servicosService.getServicos(currentPage, 10).subscribe({
+      next: (response) => {
+        this.servicos = response.content;
+        this.totalPages = response.totalPages;
+      },
       error: () =>
-        this.toastr.error('Não foi possível buscar os serviços!', 'Erro'),
+        this.toastr.error('Não foi possível buscar os funcionários!', 'Erro'),
     });
   }
 

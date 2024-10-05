@@ -21,7 +21,7 @@ const rolesPermissions = {
   usuario: [
     '/dashboard',
     '/dashboard/perfil',
-    '/dashboard/agendamento',
+    '/dashboard/agendamentos',
     '/dashboard/relatorios/agendamentos',
   ],
 };
@@ -44,7 +44,6 @@ export class AuthService {
   }
 
   register(cliente: Cliente): Observable<void> {
-    console.log(cliente);
     return this.http.post<void>(`${this.apiUrl}/registro`, cliente);
   }
 
@@ -86,7 +85,6 @@ export class AuthService {
   }
 
   hasPermission = (route: string) => {
-    console.log(route);
     const userInfo = this.getUserInfo();
     const role = userInfo.role as Role;
     return rolesPermissions[role].includes(route);
