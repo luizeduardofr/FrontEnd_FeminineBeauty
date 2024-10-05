@@ -18,8 +18,9 @@ import { Funcionario } from '../../models/funcionario';
 })
 export class PerfilComponent implements OnInit {
   role!: string;
-  id!: number;
+  userId!: number;
 
+  id!: number;
   login: string = '';
   senha?: string;
   nome: string = '';
@@ -36,13 +37,14 @@ export class PerfilComponent implements OnInit {
     private toastrService: ToastrService
   ) {
     this.role = authService.getUserInfo().role;
-    this.id = this.authService.getUserInfo().id;
+    this.userId = this.authService.getUserInfo().id;
   }
 
   ngOnInit(): void {
     if (this.role === 'funcionario') {
-      this.funcionarioService.getFuncionario(this.id).subscribe({
+      this.funcionarioService.getFuncionario(this.userId).subscribe({
         next: (funcionario) => {
+          this.id = funcionario.id as number;
           this.login = funcionario.login as string;
           this.nome = funcionario.nome;
           this.email = funcionario.email;
@@ -55,8 +57,9 @@ export class PerfilComponent implements OnInit {
         },
       });
     } else {
-      this.clienteService.getCliente(this.id).subscribe({
+      this.clienteService.getCliente(this.userId).subscribe({
         next: (cliente) => {
+          this.id = cliente.id as number;
           this.login = cliente.login as string;
           this.nome = cliente.nome;
           this.email = cliente.email;
@@ -89,8 +92,9 @@ export class PerfilComponent implements OnInit {
             'Sucesso'
           );
         },
-        error: () => {
+        error: (err) => {
           this.toastrService.error('Erro ao atualizar perfil', 'Erro');
+          this.setErrors(err.error);
         },
       });
     } else {
@@ -111,10 +115,18 @@ export class PerfilComponent implements OnInit {
               'Sucesso'
             );
           },
-          error: () => {
+          error: (err) => {
             this.toastrService.error('Erro ao atualizar perfil', 'Erro');
+            this.setErrors(err.error);
           },
         });
     }
+  }
+
+  setErrors(errorPayload: any): void {
+    this.errors = {};
+    errorPayload.forEach((error: { campo: string; mensagem: string }) => {
+      this.errors[error.campo] = error.mensagem;
+    });
   }
 }
