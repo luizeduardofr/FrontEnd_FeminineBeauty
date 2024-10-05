@@ -1,11 +1,9 @@
 <div class="container-fluid">
-  <div class="row flex-nowrap">
-    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
-      <div
-        class="d-flex flex-column align-items-center pt-2 text-white min-vh-100"
-      >
+  <div class="row">
+    <div class="col-sm-3 col-md-2 sidebar bg-dark">
+      <div class="d-flex flex-column align-items-center text-white min-vh-100">
         <a
-          href="/dashboard"
+          routerLink="/dashboard"
           class="d-flex flex-column align-items-center text-center text-white text-decoration-none"
         >
           <img
@@ -20,19 +18,18 @@
           class="d-flex w-100 nav nav-pills flex-column mb-sm-auto mt-4 gap-2 mb-0 align-items-center"
         >
           <li>
-            <a href="/dashboard/servicos" class="nav-link">
+            <a routerLink="/dashboard/servicos" class="nav-link">
               <span class="d-none d-sm-inline">Serviços</span></a
             >
           </li>
           <li>
-            <a href="/dashboard/funcionarios" class="nav-link">
+            <a routerLink="/dashboard/funcionarios" class="nav-link">
               <span class="d-none d-sm-inline">Funcionários</span></a
             >
           </li>
         </ul>
         <div class="d-flex align-items-center justify-content-center mb-4 mt-2">
           <a
-            href="#"
             class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
             data-bs-toggle="dropdown"
           >
@@ -55,7 +52,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
             <li *ngIf="userInfo.role != 'admin'">
-              <a class="dropdown-item" href="/dashboard/perfil">Perfil</a>
+              <a class="dropdown-item" routerLink="/dashboard/perfil">Perfil</a>
             </li>
             <li *ngIf="userInfo.role != 'admin'">
               <hr class="dropdown-divider" />
@@ -67,7 +64,7 @@
         </div>
       </div>
     </div>
-    <div class="col py-3">
+    <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 main">
       <ng-content></ng-content>
     </div>
   </div>

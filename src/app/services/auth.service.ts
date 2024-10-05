@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Cliente } from '../models/cliente';
+import { UserInfo } from '../models/userInfo';
 
 const rolesPermissions = {
   admin: [
@@ -12,14 +13,14 @@ const rolesPermissions = {
     '/dashboard/relatorios/agendamentos',
   ],
   funcionario: [
-    'perfil',
     '/dashboard',
+    '/dashboard/perfil',
     '/dashboard/agendamento',
     '/dashboard/relatorios/agendamentos',
   ],
   usuario: [
-    'perfil',
     '/dashboard',
+    '/dashboard/perfil',
     '/dashboard/agendamento',
     '/dashboard/relatorios/agendamentos',
   ],
@@ -67,19 +68,20 @@ export class AuthService {
     return Date.now() >= expiration;
   }
 
-  private parseJwt(): any {
+  private parseJwt(): UserInfo {
     const token = this.getToken() as string;
     const base64Url = token.split('.')[1];
 
     try {
       const base64 = decodeURIComponent(atob(base64Url).replace(/\\+/g, ''));
-      return JSON.parse(base64);
+      return JSON.parse(base64) as UserInfo;
     } catch (error) {
       this.logout();
+      return {} as UserInfo;
     }
   }
 
-  getUserInfo() {
+  getUserInfo(): UserInfo {
     return this.parseJwt();
   }
 

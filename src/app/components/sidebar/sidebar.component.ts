@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { UserInfo } from '../../models/userInfo';
+
+const menu = [];
 
 @Component({
   selector: 'app-sidebar',
@@ -11,10 +14,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent {
-  userInfo = {
-    sub: '',
-    role: '',
-  };
+  userInfo: UserInfo;
 
   constructor(public authService: AuthService) {
     this.userInfo = authService.getUserInfo();

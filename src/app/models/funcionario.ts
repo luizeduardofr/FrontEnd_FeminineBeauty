@@ -9,7 +9,7 @@ export interface Funcionario {
   email: string;
   telefone: string;
   cpf: string;
-  ativo: boolean;
+  ativo?: boolean;
   endereco: Endereco;
-  servicos: Servico[];
+  servicos?: Servico[];
 }

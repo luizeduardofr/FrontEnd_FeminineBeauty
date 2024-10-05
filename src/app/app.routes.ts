@@ -7,6 +7,7 @@ import { FuncionariosComponent } from './pages/funcionarios/funcionarios.compone
 import { RegisterComponent } from './pages/register/register.component';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
+import { PerfilComponent } from './pages/perfil/perfil.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -14,8 +15,13 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [authGuard, roleGuard],
+    canActivate: [authGuard],
+    canActivateChild: [roleGuard],
     children: [
+      {
+        path: 'perfil',
+        component: PerfilComponent,
+      },
       {
         path: 'servicos',
         component: ServicosComponent,

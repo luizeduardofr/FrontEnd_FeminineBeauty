@@ -1,12 +1,11 @@
 import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
+import { CanActivateChildFn } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 
-export const roleGuard: CanActivateFn = (route, state) => {
+export const roleGuard: CanActivateChildFn = (_, state) => {
   const authService = inject(AuthService);
   const toastrServcie = inject(ToastrService);
-  console.log(route, state);
   if (authService.hasPermission(state.url)) {
     return true;
   } else {

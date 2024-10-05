@@ -12,6 +12,10 @@ export class FuncionariosService {
 
   constructor(private http: HttpClient) {}
 
+  getFuncionario(id: number): Observable<Funcionario> {
+    return this.http.get<Funcionario>(`${this.apiUrl}/${id}`);
+  }
+
   getFuncionarios(): Observable<PageableResponse<Funcionario>> {
     return this.http.get<PageableResponse<Funcionario>>(`${this.apiUrl}`);
   }

@@ -28,7 +28,13 @@ export const appConfig: ApplicationConfig = {
       multi: true,
     },
     provideAnimations(),
-    provideToastr(),
+    provideToastr({
+      timeOut: 3000,
+      closeButton: true,
+      progressBar: true,
+      progressAnimation: 'decreasing',
+      preventDuplicates: true,
+    }),
     provideNgxMask(),
   ],
 };
