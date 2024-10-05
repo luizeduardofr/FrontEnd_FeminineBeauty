@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { Cliente } from '../models/cliente';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,11 @@ export class AuthService {
       login,
       senha,
     });
+  }
+
+  register(cliente: Cliente): Observable<void> {
+    console.log(cliente);
+    return this.http.post<void>(`${this.apiUrl}/registro`, cliente);
   }
 
   handleLogin(token: string): void {

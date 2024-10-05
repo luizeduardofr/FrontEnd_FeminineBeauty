@@ -5,9 +5,11 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { authGuard } from './auth.guard';
 import { ServicosComponent } from './pages/servicos/servicos.component';
 import { FuncionariosComponent } from './pages/funcionarios/funcionarios.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,

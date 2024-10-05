@@ -55,7 +55,7 @@ export class FuncionariosComponent implements OnInit {
 
   onSubmit(): void {
     this.errors = {};
-    this.endereco.uf = this.endereco.uf.toUpperCase();
+    this.endereco.uf = !!this.endereco.uf ? this.endereco.uf.toUpperCase() : this.endereco.uf;
     const newFuncionario: Funcionario = {
       id: this.id,
       nome: this.nome,
