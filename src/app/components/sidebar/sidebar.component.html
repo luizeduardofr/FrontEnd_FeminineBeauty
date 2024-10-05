@@ -17,14 +17,9 @@
         <ul
           class="d-flex w-100 nav nav-pills flex-column mb-sm-auto mt-4 gap-2 mb-0 align-items-center"
         >
-          <li>
-            <a routerLink="/dashboard/servicos" class="nav-link">
-              <span class="d-none d-sm-inline">Serviços</span></a
-            >
-          </li>
-          <li>
-            <a routerLink="/dashboard/funcionarios" class="nav-link">
-              <span class="d-none d-sm-inline">Funcionários</span></a
+          <li *ngFor="let m of getMenuItems()">
+            <a [routerLink]="m.link" class="nav-link">
+              <span class="d-none d-sm-inline">{{ m.name }}</span></a
             >
           </li>
         </ul>

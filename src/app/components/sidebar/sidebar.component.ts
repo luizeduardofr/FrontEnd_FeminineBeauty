@@ -4,7 +4,18 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { UserInfo } from '../../models/userInfo';
 
-const menu = [];
+const menu = [
+  {
+    link: '/dashboard/servicos',
+    name: 'Serviços',
+    roles: ['admin'],
+  },
+  {
+    link: '/dashboard/funcionarios',
+    name: 'Funcionários',
+    roles: ['admin'],
+  },
+];
 
 @Component({
   selector: 'app-sidebar',
@@ -18,5 +29,9 @@ export class SidebarComponent {
 
   constructor(public authService: AuthService) {
     this.userInfo = authService.getUserInfo();
+  }
+
+  getMenuItems() {
+    return menu.filter((item) => item.roles.includes(this.userInfo.role));
   }
 }
