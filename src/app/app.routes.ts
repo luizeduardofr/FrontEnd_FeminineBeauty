@@ -2,10 +2,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { NgModule } from '@angular/core';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { authGuard } from './auth.guard';
 import { ServicosComponent } from './pages/servicos/servicos.component';
 import { FuncionariosComponent } from './pages/funcionarios/funcionarios.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { authGuard } from './guards/auth.guard';
+import { roleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -13,7 +14,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
     children: [
       {
         path: 'servicos',

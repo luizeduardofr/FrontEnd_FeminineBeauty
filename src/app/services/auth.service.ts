@@ -4,6 +4,29 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Cliente } from '../models/cliente';
 
+const rolesPermissions = {
+  admin: [
+    '/dashboard',
+    '/dashboard/servicos',
+    '/dashboard/funcionarios',
+    '/dashboard/relatorios/agendamentos',
+  ],
+  funcionario: [
+    'perfil',
+    '/dashboard',
+    '/dashboard/agendamento',
+    '/dashboard/relatorios/agendamentos',
+  ],
+  usuario: [
+    'perfil',
+    '/dashboard',
+    '/dashboard/agendamento',
+    '/dashboard/relatorios/agendamentos',
+  ],
+};
+
+type Role = keyof typeof rolesPermissions;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -59,6 +82,13 @@ export class AuthService {
   getUserInfo() {
     return this.parseJwt();
   }
+
+  hasPermission = (route: string) => {
+    console.log(route);
+    const userInfo = this.getUserInfo();
+    const role = userInfo.role as Role;
+    return rolesPermissions[role].includes(route);
+  };
 
   checkAuth(): boolean {
     const token = this.getToken();

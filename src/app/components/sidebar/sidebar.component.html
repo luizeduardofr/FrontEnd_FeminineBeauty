@@ -54,10 +54,10 @@
             </div>
           </a>
           <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-            <li>
+            <li *ngIf="userInfo.role != 'admin'">
               <a class="dropdown-item" href="/dashboard/perfil">Perfil</a>
             </li>
-            <li>
+            <li *ngIf="userInfo.role != 'admin'">
               <hr class="dropdown-divider" />
             </li>
             <li>
