@@ -6,6 +6,7 @@ export interface Agendamento {
   id?: number;
   data: Date;
   tipoPagamento: string;
+  motivoCancelamento?: string;
   status?: StatusConsulta;
 
   funcionario: Funcionario;

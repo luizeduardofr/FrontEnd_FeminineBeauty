@@ -96,6 +96,60 @@
   </div>
 </div>
 
+<div
+  class="modal fade"
+  id="cancelamentoModal"
+  tabindex="-1"
+  aria-labelledby="cancelamentoModalLabel"
+  aria-hidden="true"
+  #cancelamentoModal
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cancelModalLabel">
+          Motivo do Cancelamento
+        </h5>
+        <button
+          #closeModalCancel
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="motivoCancelamento" class="form-label"
+              >Informe o motivo</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="motivoCancelamento"
+              [(ngModel)]="motivoCancelamento"
+              name="motivoCancelamento"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="onCloseCancelAgendamento()"
+        >
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-danger" (click)="onCancel()">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="container mt-5">
   <div class="row">
     <div class="col-12">
@@ -115,8 +169,10 @@
         <div class="card-body row m-0 py-2 px-0">
           <div class="col-md-6 px-2" *ngFor="let agendamento of agendamentos">
             <div class="card">
-              <div class="card-body">
+              <div class="card-header">
                 <h5 class="card-title">Agendamento #{{ agendamento.id }}</h5>
+              </div>
+              <div class="card-body">
                 <p class="card-text">
                   Data: {{ agendamento.data | date : "dd/MM/yyyy HH:mm" }}
                 </p>
@@ -134,6 +190,16 @@
                   Serviço: {{ agendamento.servico.descricao }}
                 </p>
                 <p class="card-text">Status: {{ agendamento.status }}</p>
+              </div>
+              <div class="card-footer d-flex justify-content-end">
+                <button
+                  class="btn btn-danger"
+                  (click)="onOpenCancelAgendamento(agendamento.id!)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#cancelamentoModal"
+                >
+                  Cancelar
+                </button>
               </div>
             </div>
           </div>
@@ -155,8 +221,10 @@
             *ngFor="let agendamento of oldAgendamentos"
           >
             <div class="card">
-              <div class="card-body">
+              <div class="card-header">
                 <h5 class="card-title">Agendamento #{{ agendamento.id }}</h5>
+              </div>
+              <div class="card-body">
                 <p class="card-text">
                   Data: {{ agendamento.data | date : "dd/MM/yyyy HH:mm" }}
                 </p>
@@ -174,6 +242,9 @@
                   Serviço: {{ agendamento.servico.descricao }}
                 </p>
                 <p class="card-text">Status: {{ agendamento.status }}</p>
+                <p class="card-text" *ngIf="agendamento.motivoCancelamento">
+                  Motivo cancelamento: {{ agendamento.motivoCancelamento }}
+                </p>
               </div>
             </div>
           </div>

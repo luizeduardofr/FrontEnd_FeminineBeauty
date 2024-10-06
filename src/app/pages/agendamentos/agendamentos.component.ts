@@ -24,6 +24,7 @@ import { CurrencyBrPipe } from '../../pipes/currency-br.pipe';
 })
 export class AgendamentosComponent implements OnInit {
   @ViewChild('closeModal') closeModal!: ElementRef;
+  @ViewChild('closeModalCancel') closeModalCancel!: ElementRef;
 
   userInfo!: UserInfo;
 
@@ -92,7 +93,7 @@ export class AgendamentosComponent implements OnInit {
 
   loadOldAgendamentos(currentPage: number = 0): void {
     this.agendamentoService
-      .getOldAgendamentosCliente(currentPage, 4, this.cliente.id!)
+      .getOldAgendamentosCliente(currentPage, 2, this.cliente.id!)
       .subscribe({
         next: (response) => {
           this.oldAgendamentos = response.content;
@@ -132,6 +133,7 @@ export class AgendamentosComponent implements OnInit {
     this.agendamentoService.addAgendamento(newAgendamento).subscribe({
       next: () => {
         this.resetForm();
+        this.closeModal.nativeElement.click();
         this.loadAgendamentos();
         this.toastr.success('Agendamento realizado com sucesso!', 'Sucesso');
       },
@@ -142,17 +144,44 @@ export class AgendamentosComponent implements OnInit {
     });
   }
 
+  onOpenCancelAgendamento(id: number): void {
+    this.id = id;
+    this.motivoCancelamento = '';
+  }
+
+  onCloseCancelAgendamento(): void {
+    this.id = 0;
+    this.motivoCancelamento = '';
+    this.closeModalCancel.nativeElement.click();
+  }
+
   onCancel(): void {
-    this.agendamentoService.cancelAgendamento(1, 'Motivo de cancelamento');
+    this.agendamentoService
+      .cancelAgendamento(this.id, this.motivoCancelamento)
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          this.resetForm();
+          this.closeModalCancel.nativeElement.click();
+          this.loadAgendamentos();
+          this.loadOldAgendamentos();
+          this.toastr.success('Agendamento cancelado com sucesso!', 'Sucesso');
+        },
+        error: (err) => {
+          console.error(err);
+          this.toastr.error('Não foi possível cancelar o agendamento!', 'Erro');
+        },
+      });
   }
 
   resetForm(): void {
-    this.closeModal.nativeElement.click();
     this.data = new Date();
     this.tipoPagamento = '';
     this.funcionario = {} as Funcionario;
     this.servico = {} as Servico;
     this.funcionarios = [];
+    this.id = 0;
+    this.motivoCancelamento = '';
   }
 
   setErrors(errorPayload: any): void {

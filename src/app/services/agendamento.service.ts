@@ -44,10 +44,15 @@ export class AgendamentoService {
     );
   }
 
-  cancelAgendamento(id: number, motivoCancelamento: string) {
-    return this.http.put<void>(
-      `${this.apiUrl}/cancel/${id}`,
-      motivoCancelamento
-    );
+  cancelAgendamento(
+    id: number,
+    motivoCancelamento: string
+  ): Observable<String> {
+    return this.http.delete<String>(`${this.apiUrl}`, {
+      body: {
+        idConsulta: id,
+        motivoCancelamento: motivoCancelamento,
+      },
+    });
   }
 }
