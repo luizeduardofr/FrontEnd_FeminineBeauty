@@ -159,8 +159,7 @@ export class AgendamentosComponent implements OnInit {
     this.agendamentoService
       .cancelAgendamento(this.id, this.motivoCancelamento)
       .subscribe({
-        next: (response) => {
-          console.log(response);
+        next: () => {
           this.resetForm();
           this.closeModalCancel.nativeElement.click();
           this.loadAgendamentos();
@@ -168,8 +167,7 @@ export class AgendamentosComponent implements OnInit {
           this.toastr.success('Agendamento cancelado com sucesso!', 'Sucesso');
         },
         error: (err) => {
-          console.error(err);
-          this.toastr.error('Não foi possível cancelar o agendamento!', 'Erro');
+          this.toastr.error(err.error, 'Erro');
         },
       });
   }
