@@ -3,6 +3,7 @@ import { Funcionario } from '../models/funcionario';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { PageableResponse } from '../models/pageableResponse';
 import { Observable } from 'rxjs';
+import { Servico } from '../models/servico';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,12 @@ export class FuncionariosService {
     return this.http.get<PageableResponse<Funcionario>>(`${this.apiUrl}`, {
       params,
     });
+  }
+
+  getFuncionariosByServico(servico: Servico): Observable<Funcionario[]> {
+    return this.http.get<Funcionario[]>(
+      `${this.apiUrl}/servicos/${servico.id}`
+    );
   }
 
   addFuncionario(funcionario: Funcionario): Observable<Funcionario> {

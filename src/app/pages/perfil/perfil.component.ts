@@ -5,7 +5,7 @@ import { NgxMaskDirective } from 'ngx-mask';
 import { Endereco } from '../../models/endereco';
 import { AuthService } from '../../services/auth.service';
 import { FuncionariosService } from '../../services/funcionarios.service';
-import { clientesService } from '../../services/cliente.service';
+import { ClientesService } from '../../services/cliente.service';
 import { ToastrService } from 'ngx-toastr';
 import { Funcionario } from '../../models/funcionario';
 
@@ -32,7 +32,7 @@ export class PerfilComponent implements OnInit {
 
   constructor(
     private funcionarioService: FuncionariosService,
-    private clienteService: clientesService,
+    private clienteService: ClientesService,
     private authService: AuthService,
     private toastrService: ToastrService
   ) {

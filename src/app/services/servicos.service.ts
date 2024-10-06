@@ -3,6 +3,7 @@ import { Servico } from '../models/servico';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PageableResponse } from '../models/pageableResponse';
+import { Funcionario } from '../models/funcionario';
 
 @Injectable({
   providedIn: 'root',
