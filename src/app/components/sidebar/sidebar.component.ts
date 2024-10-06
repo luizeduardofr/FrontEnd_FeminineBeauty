@@ -20,6 +20,11 @@ const menu = [
     name: 'Agendamentos',
     roles: ['usuario'],
   },
+  {
+    link: '/dashboard/agendamentos/funcionario',
+    name: 'Agendamentos',
+    roles: ['funcionario'],
+  },
 ];
 
 @Component({

@@ -55,4 +55,36 @@ export class AgendamentoService {
       },
     });
   }
+
+  getAgendamentosFuncionario(
+    page: number,
+    size: number,
+    idFuncionario: number
+  ): Observable<PageableResponse<Agendamento>> {
+    let params = new HttpParams().set('page', page).set('size', size);
+    return this.http.get<PageableResponse<Agendamento>>(
+      `${this.apiUrl}/funcionario/${idFuncionario}`,
+      {
+        params,
+      }
+    );
+  }
+
+  getOldAgendamentosFuncionario(
+    page: number,
+    size: number,
+    idFuncionario: number
+  ): Observable<PageableResponse<Agendamento>> {
+    let params = new HttpParams().set('page', page).set('size', size);
+    return this.http.get<PageableResponse<Agendamento>>(
+      `${this.apiUrl}/old/funcionario/${idFuncionario}`,
+      {
+        params,
+      }
+    );
+  }
+
+  concluirAgendamento(id: number): Observable<Agendamento> {
+    return this.http.put<Agendamento>(`${this.apiUrl}/concluir`, id);
+  }
 }

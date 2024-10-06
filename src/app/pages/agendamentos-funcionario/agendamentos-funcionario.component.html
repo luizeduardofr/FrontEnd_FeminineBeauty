@@ -1,103 +1,5 @@
 <div
   class="modal fade"
-  id="agendamentoModal"
-  tabindex="-1"
-  aria-labelledby="agendamentoModalLabel"
-  aria-hidden="true"
-  #funcionarioModal
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Novo Agendamento</h5>
-        <button
-          #closeModal
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <form (ngSubmit)="onSubmit()">
-          <div class="mb-3">
-            <label for="data" class="form-label">Data</label>
-            <input
-              type="date"
-              class="form-control"
-              id="data"
-              [(ngModel)]="data"
-              name="data"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="tipoPagamento" class="form-label"
-              >Tipo de Pagamento</label
-            >
-            <select
-              class="form-select"
-              id="tipoPagamento"
-              [(ngModel)]="tipoPagamento"
-              name="tipoPagamento"
-              required
-            >
-              <option value="" disabled selected>
-                Selecione o tipo de pagamento
-              </option>
-              <option value="Cartão de Crédito">Cartão de Crédito</option>
-              <option value="Cartão de Débito">Cartão de Débito</option>
-              <option value="Dinheiro">Dinheiro</option>
-              <option value="Pix">Pix</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="servico" class="form-label">Serviço</label>
-            <select
-              class="form-select"
-              id="servico"
-              [(ngModel)]="servico"
-              name="servico"
-              (ngModelChange)="onServicoChange($event)"
-              required
-            >
-              <option value="" disabled selected>Selecione o serviço</option>
-              <option *ngFor="let servico of servicos" [ngValue]="servico">
-                {{ servico.descricao }}
-              </option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="funcionario" class="form-label">Funcionário</label>
-            <select
-              class="form-select"
-              id="funcionario"
-              [(ngModel)]="funcionario"
-              name="funcionario"
-              required
-            >
-              <option value="" disabled selected>
-                Selecione o funcionário
-              </option>
-              <option
-                *ngFor="let funcionario of funcionarios"
-                [ngValue]="funcionario"
-              >
-                {{ funcionario.nome }}
-              </option>
-            </select>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" (click)="onSubmit()">Agendar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div
-  class="modal fade"
   id="cancelamentoModal"
   tabindex="-1"
   aria-labelledby="cancelamentoModalLabel"
@@ -150,25 +52,60 @@
   </div>
 </div>
 
-<div class="container mt-5">
+<div
+  class="modal fade"
+  id="confirmacaoModal"
+  tabindex="-1"
+  aria-labelledby="confirmacaoModalLabel"
+  aria-hidden="true"
+  #confirmacaoModal
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">Concluir Agendamento</h5>
+        <button
+          #concluirModalCancel
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>Tem certeza que deseja concluir o agendamento?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="onCloseConcluirAgendamento()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="onConfirmConcluirAgendamento()"
+        >
+          Concluir
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container my-5">
   <div class="row">
     <div class="col-12">
       <h2 class="mb-4 text-dark">Meus Agendamentos</h2>
-      <button
-        class="btn btn-primary mb-4"
-        data-bs-toggle="modal"
-        data-bs-target="#agendamentoModal"
-        (click)="resetForm()"
-      >
-        Novo Agendamento
-      </button>
       <div class="card">
         <div class="card-header">
           <h3>Pendentes</h3>
         </div>
         <div class="card-body row m-0 py-2 px-0">
           <div class="col-md-6 px-2" *ngFor="let agendamento of agendamentos">
-            <div class="card h-100">
+            <div class="card h-auto">
               <div class="card-header">
                 <h5 class="card-title">Agendamento #{{ agendamento.id }}</h5>
               </div>
@@ -191,7 +128,7 @@
                 </p>
                 <p class="card-text">Status: {{ agendamento.status }}</p>
               </div>
-              <div class="card-footer d-flex justify-content-end">
+              <div class="card-footer d-flex justify-content-end gap-2">
                 <button
                   class="btn btn-danger"
                   (click)="onOpenCancelAgendamento(agendamento.id!)"
@@ -199,6 +136,14 @@
                   data-bs-target="#cancelamentoModal"
                 >
                   Cancelar
+                </button>
+                <button
+                  class="btn btn-success"
+                  (click)="onOpenConcluirAgendamento(agendamento.id!)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#confirmacaoModal"
+                >
+                  Concluir
                 </button>
               </div>
             </div>

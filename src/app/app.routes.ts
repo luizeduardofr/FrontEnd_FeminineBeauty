@@ -9,6 +9,7 @@ import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { AgendamentosComponent } from './pages/agendamentos/agendamentos.component';
+import { AgendamentosFuncionarioComponent } from './pages/agendamentos-funcionario/agendamentos-funcionario.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -34,6 +35,10 @@ export const routes: Routes = [
       {
         path: 'agendamentos',
         component: AgendamentosComponent,
+      },
+      {
+        path: 'agendamentos/funcionario',
+        component: AgendamentosFuncionarioComponent,
       },
     ],
   },

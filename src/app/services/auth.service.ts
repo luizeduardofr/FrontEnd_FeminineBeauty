@@ -15,15 +15,9 @@ const rolesPermissions = {
   funcionario: [
     '/dashboard',
     '/dashboard/perfil',
-    '/dashboard/agendamento',
-    '/dashboard/relatorios/agendamentos',
+    '/dashboard/agendamentos/funcionario',
   ],
-  usuario: [
-    '/dashboard',
-    '/dashboard/perfil',
-    '/dashboard/agendamentos',
-    '/dashboard/relatorios/agendamentos',
-  ],
+  usuario: ['/dashboard', '/dashboard/perfil', '/dashboard/agendamentos'],
 };
 
 type Role = keyof typeof rolesPermissions;
