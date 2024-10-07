@@ -219,6 +219,9 @@
                     [(ngModel)]="selectedServico"
                     name="selectedServico"
                   >
+                    <option [ngValue]="defaultServico" disabled selected>
+                      Selecione um serviço
+                    </option>
                     <option
                       *ngFor="let servico of servicos"
                       [ngValue]="servico"
@@ -292,7 +295,10 @@
           >
             Editar
           </button>
-          <button class="btn btn-danger btn-sm" (click)="onDelete(i)">
+          <button
+            class="btn btn-danger btn-sm"
+            (click)="onDelete(funcionario.id)"
+          >
             Deletar
           </button>
         </td>

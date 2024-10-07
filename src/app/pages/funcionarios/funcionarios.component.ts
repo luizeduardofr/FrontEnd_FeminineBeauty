@@ -23,6 +23,8 @@ export class FuncionariosComponent implements OnInit {
   funcionarios: Funcionario[] = [];
   totalPages: number = 0;
 
+  defaultServico: Servico = {} as Servico;
+
   login?: string = '';
   nome: string = '';
   email: string = '';
@@ -32,7 +34,7 @@ export class FuncionariosComponent implements OnInit {
   endereco: Endereco = {} as Endereco;
   servicos: Servico[] = [];
   selectedServicos: Servico[] = [];
-  selectedServico?: Servico;
+  selectedServico: Servico = this.defaultServico;
   id?: number;
 
   errors: { [key: string]: string } = {};
@@ -55,6 +57,7 @@ export class FuncionariosComponent implements OnInit {
   loadFuncionarios(currentPage: number = 0): void {
     this.funcionariosService.getFuncionarios(currentPage, 10).subscribe({
       next: (response) => {
+        this.resetForm();
         this.funcionarios = response.content;
         this.totalPages = response.totalPages;
       },
@@ -82,9 +85,8 @@ export class FuncionariosComponent implements OnInit {
     };
     if (this.id === undefined) {
       this.funcionariosService.addFuncionario(newFuncionario).subscribe({
-        next: (response) => {
-          this.resetForm();
-          this.funcionarios.push(response);
+        next: () => {
+          this.loadFuncionarios();
           this.toastr.success('Funcionário adicionado com sucesso!', 'Sucesso');
         },
         error: (err) => {
@@ -125,6 +127,7 @@ export class FuncionariosComponent implements OnInit {
 
   onEdit(editFuncionario: Funcionario): void {
     this.errors = {};
+    this.selectedServico = this.defaultServico;
     this.id = editFuncionario.id;
     this.nome = editFuncionario.nome;
     this.email = editFuncionario.email;
@@ -139,8 +142,7 @@ export class FuncionariosComponent implements OnInit {
   onDelete(id: number | undefined): void {
     this.funcionariosService.deleteFuncionario(id as number).subscribe({
       next: () => {
-        const index = this.funcionarios.findIndex((ser) => ser.id == id);
-        this.funcionarios.splice(index, 1);
+        this.loadFuncionarios();
         this.toastr.success('Funcionário removido com sucesso!', 'Sucesso');
       },
       error: () =>
@@ -159,7 +161,7 @@ export class FuncionariosComponent implements OnInit {
     this.ativo = false;
     this.endereco = {} as Endereco;
     this.selectedServicos = [];
-    this.selectedServico = undefined;
+    this.selectedServico = this.defaultServico;
     this.errors = {};
   }
 
@@ -175,7 +177,7 @@ export class FuncionariosComponent implements OnInit {
       !this.selectedServicos.includes(this.selectedServico)
     ) {
       this.selectedServicos.push(this.selectedServico);
-      this.selectedServico = undefined;
+      this.selectedServico = this.defaultServico;
     }
   }
 
