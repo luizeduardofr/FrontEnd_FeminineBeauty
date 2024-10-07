@@ -44,6 +44,7 @@ export class AgendamentosComponent implements OnInit {
   agendamentos: Agendamento[] = [];
   oldAgendamentos: Agendamento[] = [];
   data = '';
+  hora: string = '';
   tipoPagamento = '';
   funcionario: Funcionario = this.defaultFuncionario;
   cliente: Cliente = {} as Cliente;
@@ -169,7 +170,7 @@ export class AgendamentosComponent implements OnInit {
   onSubmit(): void {
     this.errors = {};
     const newAgendamento: Agendamento = {
-      data: new Date(this.data),
+      data: new Date(`${this.data}T${this.hora}`),
       tipoPagamento: this.tipoPagamento,
       funcionario: this.funcionario,
       cliente: this.cliente,
@@ -183,8 +184,12 @@ export class AgendamentosComponent implements OnInit {
         this.toastr.success('Agendamento realizado com sucesso!', 'Sucesso');
       },
       error: (err) => {
-        this.toastr.error('Não foi possível realizar o agendamento!', 'Erro');
-        this.setErrors(err.error);
+        if (err.error instanceof Array) {
+          this.toastr.error('Erro ao realizar agendamento', 'Erro');
+          this.setErrors(err.error);
+        } else {
+          this.toastr.error(err.error, 'Erro');
+        }
       },
     });
   }
@@ -226,6 +231,7 @@ export class AgendamentosComponent implements OnInit {
     this.funcionarios = [];
     this.id = 0;
     this.motivoCancelamento = '';
+    this.errors = {};
   }
 
   setErrors(errorPayload: any): void {
