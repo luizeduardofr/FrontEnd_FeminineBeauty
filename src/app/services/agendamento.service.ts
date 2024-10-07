@@ -35,7 +35,13 @@ export class AgendamentoService {
   }
 
   addAgendamento(agendamento: Agendamento) {
-    return this.http.post<Agendamento>(`${this.apiUrl}`, agendamento);
+    return this.http.post<Agendamento>(`${this.apiUrl}`, {
+      data: agendamento.data,
+      tipoPagamento: agendamento.tipoPagamento,
+      funcionario: agendamento.funcionario.id ? agendamento.funcionario : null,
+      cliente: agendamento.cliente.id ? agendamento.cliente : null,
+      servico: agendamento.servico.id ? agendamento.servico : null,
+    });
   }
 
   getOldAgendamentosCliente(

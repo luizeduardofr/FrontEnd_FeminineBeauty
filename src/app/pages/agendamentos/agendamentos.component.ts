@@ -38,13 +38,16 @@ export class AgendamentosComponent implements OnInit {
   funcionarios: Funcionario[] = [];
   funcionariosToFiltro: Funcionario[] = [];
 
+  defaultServico: Servico = {} as Servico;
+  defaultFuncionario: Funcionario = {} as Funcionario;
+
   agendamentos: Agendamento[] = [];
   oldAgendamentos: Agendamento[] = [];
-  data = new Date();
+  data = '';
   tipoPagamento = '';
-  funcionario: Funcionario = {} as Funcionario;
+  funcionario: Funcionario = this.defaultFuncionario;
   cliente: Cliente = {} as Cliente;
-  servico: Servico = {} as Servico;
+  servico: Servico = this.defaultServico;
 
   id = 0;
   motivoCancelamento = '';
@@ -53,9 +56,6 @@ export class AgendamentosComponent implements OnInit {
   totalPagesOldAgendamentos = 0;
 
   errors: { [key: string]: string } = {};
-
-  defaultServico: Servico = {} as Servico;
-  defaultFuncionario: Funcionario = {} as Funcionario;
 
   filtroServico: Servico = this.defaultServico;
   filtroFuncionario: Funcionario = this.defaultFuncionario;
@@ -152,6 +152,7 @@ export class AgendamentosComponent implements OnInit {
   }
 
   onServicoChange(servico: Servico): void {
+    this.funcionario = this.defaultFuncionario;
     this.loadFuncionarios(servico);
   }
 
@@ -218,10 +219,10 @@ export class AgendamentosComponent implements OnInit {
 
   resetForm(): void {
     this.navigationComponent?.resetNavigation();
-    this.data = new Date();
+    this.data = '';
     this.tipoPagamento = '';
-    this.funcionario = {} as Funcionario;
-    this.servico = {} as Servico;
+    this.funcionario = this.defaultFuncionario;
+    this.servico = this.defaultServico;
     this.funcionarios = [];
     this.id = 0;
     this.motivoCancelamento = '';

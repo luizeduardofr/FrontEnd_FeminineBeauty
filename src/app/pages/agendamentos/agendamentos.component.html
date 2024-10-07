@@ -30,6 +30,9 @@
               name="data"
               required
             />
+            <div *ngIf="errors['data']" class="text-danger">
+              {{ errors["data"] }}
+            </div>
           </div>
           <div class="mb-3">
             <label for="tipoPagamento" class="form-label"
@@ -50,6 +53,9 @@
               <option value="Dinheiro">Dinheiro</option>
               <option value="Pix">Pix</option>
             </select>
+            <div *ngIf="errors['tipoPagamento']" class="text-danger">
+              {{ errors["tipoPagamento"] }}
+            </div>
           </div>
           <div class="mb-3">
             <label for="servico" class="form-label">Serviço</label>
@@ -61,11 +67,16 @@
               (ngModelChange)="onServicoChange($event)"
               required
             >
-              <option value="" disabled selected>Selecione o serviço</option>
+              <option [ngValue]="defaultServico" disabled selected>
+                Selecione o serviço
+              </option>
               <option *ngFor="let servico of servicos" [ngValue]="servico">
                 {{ servico.descricao }}
               </option>
             </select>
+            <div *ngIf="errors['servico']" class="text-danger">
+              {{ errors["servico"] }}
+            </div>
           </div>
           <div class="mb-3">
             <label for="funcionario" class="form-label">Funcionário</label>
@@ -76,7 +87,7 @@
               name="funcionario"
               required
             >
-              <option value="" disabled selected>
+              <option [ngValue]="defaultFuncionario" disabled selected>
                 Selecione o funcionário
               </option>
               <option
@@ -86,6 +97,9 @@
                 {{ funcionario.nome }}
               </option>
             </select>
+            <div *ngIf="errors['funcionario']" class="text-danger">
+              {{ errors["funcionario"] }}
+            </div>
           </div>
         </form>
       </div>
