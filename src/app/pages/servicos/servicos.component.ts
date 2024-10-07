@@ -66,9 +66,10 @@ export class ServicosComponent implements OnInit {
     };
     if (this.id === undefined) {
       this.servicosService.addServico(newServico).subscribe({
-        next: (response) => {
+        next: () => {
           this.resetForm();
-          this.servicos.push(response);
+          this.closeModal.nativeElement.click();
+          this.loadServicos();
           this.toastr.success('Serviço adicionado com sucesso!', 'Sucesso');
         },
         error: (err) => {
@@ -80,8 +81,8 @@ export class ServicosComponent implements OnInit {
       this.servicosService.updateServico(newServico).subscribe({
         next: (response) => {
           this.resetForm();
-          const index = this.servicos.findIndex((ser) => ser.id == response.id);
-          this.servicos.splice(index, 1, response);
+          this.closeModal.nativeElement.click();
+          this.loadServicos();
           this.toastr.success('Serviço atualizado com sucesso!', 'Sucesso');
         },
         error: (err) => {
@@ -100,7 +101,7 @@ export class ServicosComponent implements OnInit {
   }
 
   onEdit(editServico: Servico): void {
-    this.closeModal.nativeElement.click();
+    this.resetForm();
     this.errors = {};
     this.id = editServico.id;
     this.descricao = editServico.descricao;
@@ -112,8 +113,8 @@ export class ServicosComponent implements OnInit {
   onDelete(id: number | undefined): void {
     this.servicosService.deleteServico(id as number).subscribe({
       next: () => {
-        const index = this.servicos.findIndex((ser) => ser.id == id);
-        this.servicos.splice(index, 1);
+        this.resetForm();
+        this.loadServicos();
         this.toastr.success('Serviço removido com sucesso!', 'Sucesso');
       },
       error: () =>
