@@ -28,9 +28,7 @@ export class FuncionariosService {
   }
 
   getFuncionariosByServico(servico: Servico): Observable<Funcionario[]> {
-    return this.http.get<Funcionario[]>(
-      `${this.apiUrl}/servicos/${servico.id}`
-    );
+    return this.http.get<Funcionario[]>(`${this.apiUrl}/servico/${servico.id}`);
   }
 
   addFuncionario(funcionario: Funcionario): Observable<Funcionario> {

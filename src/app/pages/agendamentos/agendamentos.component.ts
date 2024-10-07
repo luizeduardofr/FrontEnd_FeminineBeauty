@@ -26,10 +26,17 @@ export class AgendamentosComponent implements OnInit {
   @ViewChild('closeModal') closeModal!: ElementRef;
   @ViewChild('closeModalCancel') closeModalCancel!: ElementRef;
 
+  @ViewChild('navigationComponent')
+  navigationComponent!: NavigationComponent;
+
+  @ViewChild('navigationOldComponent')
+  navigationOldComponent!: NavigationComponent;
+
   userInfo!: UserInfo;
 
   servicos: Servico[] = [];
   funcionarios: Funcionario[] = [];
+  funcionariosToFiltro: Funcionario[] = [];
 
   agendamentos: Agendamento[] = [];
   oldAgendamentos: Agendamento[] = [];
@@ -46,6 +53,16 @@ export class AgendamentosComponent implements OnInit {
   totalPagesOldAgendamentos = 0;
 
   errors: { [key: string]: string } = {};
+
+  defaultServico: Servico = {} as Servico;
+  defaultFuncionario: Funcionario = {} as Funcionario;
+
+  filtroServico: Servico = this.defaultServico;
+  filtroFuncionario: Funcionario = this.defaultFuncionario;
+
+  filtroStatus: string = '';
+  filtroServicoOld: Servico = this.defaultServico;
+  filtroFuncionarioOld: Funcionario = this.defaultFuncionario;
 
   constructor(
     private authService: AuthService,
@@ -64,6 +81,11 @@ export class AgendamentosComponent implements OnInit {
       error: () =>
         this.toastr.error('Não foi possível buscar os serviços!', 'Erro'),
     });
+    this.funcionariosService.getFuncionarios(0, 999).subscribe({
+      next: (response) => (this.funcionariosToFiltro = response.content),
+      error: () =>
+        this.toastr.error('Não foi possível buscar os funcionários!', 'Erro'),
+    });
   }
 
   loadCliente(): void {
@@ -78,9 +100,19 @@ export class AgendamentosComponent implements OnInit {
     });
   }
 
-  loadAgendamentos(currentPage: number = 0): void {
+  loadAgendamentos(
+    currentPage: number = 0,
+    idServico?: number,
+    idFuncionario?: number
+  ): void {
     this.agendamentoService
-      .getAgendamentosCliente(currentPage, 2, this.cliente.id!)
+      .getAgendamentosCliente(
+        currentPage,
+        2,
+        this.cliente.id!,
+        idServico,
+        idFuncionario
+      )
       .subscribe({
         next: (response) => {
           this.agendamentos = response.content;
@@ -91,9 +123,21 @@ export class AgendamentosComponent implements OnInit {
       });
   }
 
-  loadOldAgendamentos(currentPage: number = 0): void {
+  loadOldAgendamentos(
+    currentPage: number = 0,
+    idServico?: number,
+    idFuncionario?: number,
+    status?: string
+  ): void {
     this.agendamentoService
-      .getOldAgendamentosCliente(currentPage, 2, this.cliente.id!)
+      .getOldAgendamentosCliente(
+        currentPage,
+        2,
+        this.cliente.id!,
+        idServico,
+        idFuncionario,
+        status
+      )
       .subscribe({
         next: (response) => {
           this.oldAgendamentos = response.content;
@@ -173,6 +217,7 @@ export class AgendamentosComponent implements OnInit {
   }
 
   resetForm(): void {
+    this.navigationComponent?.resetNavigation();
     this.data = new Date();
     this.tipoPagamento = '';
     this.funcionario = {} as Funcionario;
@@ -187,5 +232,50 @@ export class AgendamentosComponent implements OnInit {
     errorPayload.forEach((error: { campo: string; mensagem: string }) => {
       this.errors[error.campo] = error.mensagem;
     });
+  }
+
+  onFiltroServicoChange(servico: Servico): void {
+    this.totalPagesAgendamentos = 0;
+    this.navigationComponent?.resetNavigation();
+    this.loadAgendamentos(0, servico.id, this.filtroFuncionario.id);
+  }
+
+  onFiltroFuncionarioChange(funcionario: Funcionario): void {
+    this.totalPagesAgendamentos = 0;
+    this.navigationComponent?.resetNavigation();
+    this.loadAgendamentos(0, this.filtroServico.id, funcionario.id);
+  }
+
+  onFiltroServicoOldChange(servico: Servico): void {
+    this.totalPagesOldAgendamentos = 0;
+    this.navigationOldComponent?.resetNavigation();
+    this.loadOldAgendamentos(
+      0,
+      servico.id,
+      this.filtroFuncionario.id,
+      this.filtroStatus
+    );
+  }
+
+  onFiltroFuncionarioOldChange(funcionario: Funcionario): void {
+    this.totalPagesOldAgendamentos = 0;
+    this.navigationOldComponent?.resetNavigation();
+    this.loadOldAgendamentos(
+      0,
+      this.filtroServico.id,
+      funcionario.id,
+      this.filtroStatus
+    );
+  }
+
+  onFiltroStatusChange(status: string): void {
+    this.totalPagesOldAgendamentos = 0;
+    this.navigationComponent?.resetNavigation();
+    this.loadOldAgendamentos(
+      0,
+      this.filtroServicoOld.id,
+      this.filtroFuncionarioOld.id,
+      status
+    );
   }
 }

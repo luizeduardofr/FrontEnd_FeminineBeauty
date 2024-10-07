@@ -150,7 +150,7 @@
   </div>
 </div>
 
-<div class="container mt-5">
+<div class="container my-5">
   <div class="row">
     <div class="col-12">
       <h2 class="mb-4 text-dark">Meus Agendamentos</h2>
@@ -163,8 +163,47 @@
         Novo Agendamento
       </button>
       <div class="card">
-        <div class="card-header">
-          <h3>Pendentes</h3>
+        <div
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <h3 class="m-0 p-0">Pendentes</h3>
+          <div class="d-flex gap-4">
+            <div class="form-group d-flex gap-2 align-items-center">
+              <label for="funcionarioFilterSelect" class="text-nowrap">
+                Filtrar por Funcionário
+              </label>
+              <select
+                id="funcionarioFilterSelect"
+                class="form-select"
+                [(ngModel)]="filtroFuncionario"
+                (ngModelChange)="onFiltroFuncionarioChange($event)"
+              >
+                <option [ngValue]="defaultFuncionario">Todos</option>
+                <option
+                  *ngFor="let funcionario of funcionariosToFiltro"
+                  [ngValue]="funcionario"
+                >
+                  {{ funcionario.nome }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group d-flex gap-2 align-items-center">
+              <label for="servicoFilterSelect" class="text-nowrap">
+                Filtrar por Serviço
+              </label>
+              <select
+                id="servicoFilterSelect"
+                class="form-select"
+                [(ngModel)]="filtroServico"
+                (ngModelChange)="onFiltroServicoChange($event)"
+              >
+                <option [ngValue]="defaultServico">Todos</option>
+                <option *ngFor="let servico of servicos" [ngValue]="servico">
+                  {{ servico.descricao }}
+                </option>
+              </select>
+            </div>
+          </div>
         </div>
         <div class="card-body row m-0 py-2 px-0">
           <div class="col-md-6 px-2" *ngFor="let agendamento of agendamentos">
@@ -210,14 +249,71 @@
         <div class="mx-2">
           <app-navigation
             *ngIf="agendamentos.length > 0"
-            (load)="loadAgendamentos($event)"
+            #navigationComponent
+            (load)="
+              loadAgendamentos($event, filtroServico.id, filtroFuncionario.id)
+            "
             [totalPages]="totalPagesAgendamentos"
           ></app-navigation>
         </div>
       </div>
       <div class="card mt-4">
-        <div class="card-header">
-          <h3>Histórico</h3>
+        <div
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <h3 class="m-0 p-0">Histórico</h3>
+          <div class="d-flex gap-4">
+            <div class="form-group d-flex gap-2 align-items-center">
+              <label for="funcionarioFilterSelect" class="text-nowrap">
+                Filtrar por Funcionário
+              </label>
+              <select
+                id="funcionarioFilterSelect"
+                class="form-select"
+                [(ngModel)]="filtroFuncionarioOld"
+                (ngModelChange)="onFiltroFuncionarioOldChange($event)"
+              >
+                <option [ngValue]="defaultFuncionario">Todos</option>
+                <option
+                  *ngFor="let funcionario of funcionariosToFiltro"
+                  [ngValue]="funcionario"
+                >
+                  {{ funcionario.nome }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group d-flex gap-2 align-items-center">
+              <label for="servicoFilterSelect" class="text-nowrap">
+                Filtrar por Serviço
+              </label>
+              <select
+                id="servicoFilterSelect"
+                class="form-select"
+                [(ngModel)]="filtroServicoOld"
+                (ngModelChange)="onFiltroServicoOldChange($event)"
+              >
+                <option [ngValue]="defaultServico">Todos</option>
+                <option *ngFor="let servico of servicos" [ngValue]="servico">
+                  {{ servico.descricao }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group d-flex gap-2 align-items-center">
+              <label for="statusFilterSelect" class="text-nowrap">
+                Filtrar por Status
+              </label>
+              <select
+                id="statusFilterSelect"
+                class="form-select"
+                [(ngModel)]="filtroStatus"
+                (ngModelChange)="onFiltroStatusChange($event)"
+              >
+                <option value="">Todos</option>
+                <option value="CONCLUIDO">Concluído</option>
+                <option value="CANCELADO">Cancelado</option>
+              </select>
+            </div>
+          </div>
         </div>
         <div class="card-body row m-0 py-2 px-0">
           <div
@@ -259,7 +355,15 @@
         <div class="mx-2">
           <app-navigation
             *ngIf="oldAgendamentos.length > 0"
-            (load)="loadOldAgendamentos($event)"
+            #navigationOldComponent
+            (load)="
+              loadOldAgendamentos(
+                $event,
+                filtroServicoOld.id,
+                filtroFuncionarioOld.id,
+                filtroStatus
+              )
+            "
             [totalPages]="totalPagesOldAgendamentos"
           ></app-navigation>
         </div>

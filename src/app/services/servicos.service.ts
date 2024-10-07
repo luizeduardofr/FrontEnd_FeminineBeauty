@@ -23,6 +23,12 @@ export class ServicosService {
     });
   }
 
+  getServicosByFuncionario(funcionario: Funcionario): Observable<Servico[]> {
+    return this.http.get<Servico[]>(
+      `${this.apiUrl}/funcionario/${funcionario.id}`
+    );
+  }
+
   addServico(servico: Servico): Observable<Servico> {
     return this.http.post<Servico>(`${this.apiUrl}`, servico);
   }

@@ -10,6 +10,8 @@ import { CommonModule } from '@angular/common';
 import { NavigationComponent } from '../../components/navigation/navigation.component';
 import { CurrencyBrPipe } from '../../pipes/currency-br.pipe';
 import { FormsModule } from '@angular/forms';
+import { Servico } from '../../models/servico';
+import { ServicosService } from '../../services/servicos.service';
 
 @Component({
   selector: 'app-agendamentos-funcionario',
@@ -19,11 +21,21 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './agendamentos-funcionario.component.scss',
 })
 export class AgendamentosFuncionarioComponent implements OnInit {
-  @ViewChild('closeModalCancel') closeModalCancel!: ElementRef;
-  @ViewChild('concluirModalCancel') concluirModalCancel!: ElementRef;
+  @ViewChild('closeModalCancel')
+  closeModalCancel!: ElementRef;
+
+  @ViewChild('concluirModalCancel')
+  concluirModalCancel!: ElementRef;
+
+  @ViewChild('navigationComponent')
+  navigationComponent!: NavigationComponent;
+
+  @ViewChild('navigationOldComponent')
+  navigationOldComponent!: NavigationComponent;
 
   userInfo!: UserInfo;
   funcionario!: Funcionario;
+  servicosFuncionario: Servico[] = [];
 
   agendamentos: Agendamento[] = [];
   totalPagesAgendamentos = 0;
@@ -32,9 +44,16 @@ export class AgendamentosFuncionarioComponent implements OnInit {
 
   id!: number;
   motivoCancelamento = '';
+  status: string = '';
+
+  defaultServico: Servico = {} as Servico;
+
+  filtroServico: Servico = this.defaultServico;
+  filtroServicoOld: Servico = this.defaultServico;
 
   constructor(
     private authService: AuthService,
+    private servicoService: ServicosService,
     private funcionarioService: FuncionariosService,
     private agendamentoService: AgendamentoService,
     private toastr: ToastrService
@@ -51,6 +70,7 @@ export class AgendamentosFuncionarioComponent implements OnInit {
         this.funcionario = funcionario;
         this.loadAgendamentos();
         this.loadOldAgendamentos();
+        this.loadServicos(funcionario);
       },
       error: () => {
         this.toastr.error('Erro ao carregar funcionário', 'Erro');
@@ -58,9 +78,24 @@ export class AgendamentosFuncionarioComponent implements OnInit {
     });
   }
 
-  loadAgendamentos(currentPage: number = 0): void {
+  loadServicos(funcionario: Funcionario): void {
+    this.servicoService.getServicosByFuncionario(funcionario).subscribe({
+      next: (response) => {
+        this.servicosFuncionario = response;
+      },
+      error: () =>
+        this.toastr.error('Não foi possível buscar os funcionários!', 'Erro'),
+    });
+  }
+
+  loadAgendamentos(currentPage: number = 0, idServico?: number): void {
     this.agendamentoService
-      .getAgendamentosFuncionario(currentPage, 2, this.funcionario.id!)
+      .getAgendamentosFuncionario(
+        currentPage,
+        2,
+        this.funcionario.id!,
+        idServico
+      )
       .subscribe({
         next: (response) => {
           this.agendamentos = response.content;
@@ -72,9 +107,19 @@ export class AgendamentosFuncionarioComponent implements OnInit {
       });
   }
 
-  loadOldAgendamentos(currentPage: number = 0): void {
+  loadOldAgendamentos(
+    currentPage: number = 0,
+    status?: string,
+    idServico?: number
+  ): void {
     this.agendamentoService
-      .getOldAgendamentosFuncionario(currentPage, 2, this.funcionario.id!)
+      .getOldAgendamentosFuncionario(
+        currentPage,
+        2,
+        this.funcionario.id!,
+        status,
+        idServico
+      )
       .subscribe({
         next: (response) => {
           this.oldAgendamentos = response.content;
@@ -144,5 +189,23 @@ export class AgendamentosFuncionarioComponent implements OnInit {
   private resetForm(): void {
     this.id = 0;
     this.motivoCancelamento = '';
+  }
+
+  onStatusChange(status: string): void {
+    this.totalPagesOldAgendamentos = 0;
+    this.navigationComponent?.resetNavigation();
+    this.loadOldAgendamentos(0, status, this.filtroServicoOld.id);
+  }
+
+  onFiltroServicoOldChange(servico: Servico): void {
+    this.totalPagesOldAgendamentos = 0;
+    this.navigationOldComponent?.resetNavigation();
+    this.loadOldAgendamentos(0, this.status, servico.id);
+  }
+
+  onFiltroServicoChange(servico: Servico): void {
+    this.totalPagesAgendamentos = 0;
+    this.navigationComponent?.resetNavigation();
+    this.loadAgendamentos(0, servico.id);
   }
 }

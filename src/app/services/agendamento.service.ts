@@ -15,9 +15,17 @@ export class AgendamentoService {
   getAgendamentosCliente(
     page: number,
     size: number,
-    idCliente: number
+    idCliente: number,
+    idServico?: number,
+    idFuncionario?: number
   ): Observable<PageableResponse<Agendamento>> {
     let params = new HttpParams().set('page', page).set('size', size);
+    if (idServico) {
+      params = params.set('idServico', idServico);
+    }
+    if (idFuncionario) {
+      params = params.set('idFuncionario', idFuncionario);
+    }
     return this.http.get<PageableResponse<Agendamento>>(
       `${this.apiUrl}/cliente/${idCliente}`,
       {
@@ -33,9 +41,21 @@ export class AgendamentoService {
   getOldAgendamentosCliente(
     page: number,
     size: number,
-    idCliente: number
+    idCliente: number,
+    idServico?: number,
+    idFuncionario?: number,
+    status?: string
   ): Observable<PageableResponse<Agendamento>> {
     let params = new HttpParams().set('page', page).set('size', size);
+    if (idServico) {
+      params = params.set('idServico', idServico);
+    }
+    if (idFuncionario) {
+      params = params.set('idFuncionario', idFuncionario);
+    }
+    if (status) {
+      params = params.set('status', status);
+    }
     return this.http.get<PageableResponse<Agendamento>>(
       `${this.apiUrl}/old/cliente/${idCliente}`,
       {
@@ -59,9 +79,13 @@ export class AgendamentoService {
   getAgendamentosFuncionario(
     page: number,
     size: number,
-    idFuncionario: number
+    idFuncionario: number,
+    idServico?: number
   ): Observable<PageableResponse<Agendamento>> {
     let params = new HttpParams().set('page', page).set('size', size);
+    if (idServico) {
+      params = params.set('idServico', idServico);
+    }
     return this.http.get<PageableResponse<Agendamento>>(
       `${this.apiUrl}/funcionario/${idFuncionario}`,
       {
@@ -73,9 +97,17 @@ export class AgendamentoService {
   getOldAgendamentosFuncionario(
     page: number,
     size: number,
-    idFuncionario: number
+    idFuncionario: number,
+    status?: string,
+    idServico?: number
   ): Observable<PageableResponse<Agendamento>> {
     let params = new HttpParams().set('page', page).set('size', size);
+    if (status) {
+      params = params.set('status', status);
+    }
+    if (idServico) {
+      params = params.set('idServico', idServico);
+    }
     return this.http.get<PageableResponse<Agendamento>>(
       `${this.apiUrl}/old/funcionario/${idFuncionario}`,
       {

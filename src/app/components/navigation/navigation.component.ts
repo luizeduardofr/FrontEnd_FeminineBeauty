@@ -32,4 +32,8 @@ export class NavigationComponent {
       this.load.emit(this.currentPage);
     }
   }
+
+  resetNavigation() {
+    this.currentPage = 0;
+  }
 }
