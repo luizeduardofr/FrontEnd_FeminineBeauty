@@ -10,7 +10,7 @@ const rolesPermissions = {
     '/dashboard',
     '/dashboard/servicos',
     '/dashboard/funcionarios',
-    '/dashboard/relatorios/agendamentos',
+    '/dashboard/agendamentos/admin',
   ],
   funcionario: [
     '/dashboard',

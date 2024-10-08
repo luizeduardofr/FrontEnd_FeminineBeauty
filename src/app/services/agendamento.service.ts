@@ -122,6 +122,52 @@ export class AgendamentoService {
     );
   }
 
+  getAgendamentosAdmin(
+    page: number,
+    size: number,
+    idFuncionario?: number,
+    idServico?: number
+  ): Observable<PageableResponse<Agendamento>> {
+    let params = new HttpParams().set('page', page).set('size', size);
+    if (idServico) {
+      params = params.set('idServico', idServico);
+    }
+    if (idFuncionario) {
+      params = params.set('idFuncionario', idFuncionario);
+    }
+    return this.http.get<PageableResponse<Agendamento>>(
+      `${this.apiUrl}/admin`,
+      {
+        params,
+      }
+    );
+  }
+
+  getOldAgendamentosAdmin(
+    page: number,
+    size: number,
+    idFuncionario?: number,
+    status?: string,
+    idServico?: number
+  ): Observable<PageableResponse<Agendamento>> {
+    let params = new HttpParams().set('page', page).set('size', size);
+    if (status) {
+      params = params.set('status', status);
+    }
+    if (idServico) {
+      params = params.set('idServico', idServico);
+    }
+    if (idFuncionario) {
+      params = params.set('idFuncionario', idFuncionario);
+    }
+    return this.http.get<PageableResponse<Agendamento>>(
+      `${this.apiUrl}/old/admin`,
+      {
+        params,
+      }
+    );
+  }
+
   concluirAgendamento(id: number): Observable<Agendamento> {
     return this.http.put<Agendamento>(`${this.apiUrl}/concluir`, id);
   }
