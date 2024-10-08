@@ -93,4 +93,11 @@ export class AuthService {
 
     return !!token;
   }
+
+  alterarSenha(senha: string): Observable<void> {
+    const {id} = this.getUserInfo();
+    return this.http.post<void>(`${this.apiUrl}/alterar-senha/${id}`, {
+      senha
+    });
+  }
 }

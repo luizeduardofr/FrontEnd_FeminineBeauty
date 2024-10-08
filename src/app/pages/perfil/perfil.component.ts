@@ -87,6 +87,9 @@ export class PerfilComponent implements OnInit {
       };
       this.funcionarioService.updateFuncionario(funcionario).subscribe({
         next: () => {
+          if (this.senha) {
+            this.alterarSenha(this.senha);
+          }
           this.toastrService.success(
             'Perfil atualizado com sucesso',
             'Sucesso'
@@ -110,6 +113,9 @@ export class PerfilComponent implements OnInit {
         })
         .subscribe({
           next: () => {
+            if (this.senha) {
+              this.alterarSenha(this.senha);
+            }
             this.toastrService.success(
               'Perfil atualizado com sucesso',
               'Sucesso'
@@ -127,6 +133,20 @@ export class PerfilComponent implements OnInit {
     this.errors = {};
     errorPayload.forEach((error: { campo: string; mensagem: string }) => {
       this.errors[error.campo] = error.mensagem;
+    });
+  }
+
+  alterarSenha(senha: string): void {
+    this.authService.alterarSenha(senha).subscribe({
+      next: () => {
+        this.toastrService.success(
+          'Senha alterada com sucesso',
+          'Sucesso'
+        );
+      },
+      error: () => {
+        this.toastrService.error('Erro ao atualizar a senha', 'Erro');
+      },
     });
   }
 }
