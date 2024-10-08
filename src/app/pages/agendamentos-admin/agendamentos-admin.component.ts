@@ -148,7 +148,7 @@ export class AgendamentosAdminComponent implements OnInit {
     this.loadOldAgendamentos(
       0,
       servico.id,
-      this.filtroFuncionario.id,
+      this.filtroFuncionarioOld.id,
       this.filtroStatus
     );
   }
@@ -158,7 +158,7 @@ export class AgendamentosAdminComponent implements OnInit {
     this.navigationOldComponent?.resetNavigation();
     this.loadOldAgendamentos(
       0,
-      this.filtroServico.id,
+      this.filtroServicoOld.id,
       funcionario.id,
       this.filtroStatus
     );
