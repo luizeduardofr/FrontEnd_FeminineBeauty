@@ -14,6 +14,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserInfo } from '../../models/userInfo';
 import { NavigationComponent } from '../../components/navigation/navigation.component';
 import { CurrencyBrPipe } from '../../pipes/currency-br.pipe';
+import moment from 'moment-timezone';
 
 @Component({
   selector: 'app-agendamentos',
@@ -284,5 +285,10 @@ export class AgendamentosComponent implements OnInit {
       this.filtroFuncionarioOld.id,
       status
     );
+  }
+
+  getFormatedData(data: Date): string {
+    const convertedDate = moment.utc(data).tz("America/Sao_Paulo").format('DD/MM/YYYY HH:mm');
+    return convertedDate;
   }
 }
