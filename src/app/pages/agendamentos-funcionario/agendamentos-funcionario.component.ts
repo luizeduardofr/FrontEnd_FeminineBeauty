@@ -12,6 +12,7 @@ import { CurrencyBrPipe } from '../../pipes/currency-br.pipe';
 import { FormsModule } from '@angular/forms';
 import { Servico } from '../../models/servico';
 import { ServicosService } from '../../services/servicos.service';
+import moment from 'moment-timezone';
 
 @Component({
   selector: 'app-agendamentos-funcionario',
@@ -211,5 +212,10 @@ export class AgendamentosFuncionarioComponent implements OnInit {
     this.totalPagesAgendamentos = 0;
     this.navigationComponent?.resetNavigation();
     this.loadAgendamentos(0, servico.id);
+  }
+
+  getFormatedData(data: Date): string {
+    const convertedDate = moment.utc(data).tz("America/Sao_Paulo").format('DD/MM/YYYY HH:mm');
+    return convertedDate;
   }
 }

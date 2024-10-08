@@ -134,7 +134,7 @@
               </div>
               <div class="card-body">
                 <p class="card-text">
-                  Data: {{ agendamento.data | date : "dd/MM/yyyy HH:mm" }}
+                  Data: {{ getFormatedData(agendamento.data) }}
                 </p>
                 <p class="card-text">
                   Tipo de Pagamento: {{ agendamento.tipoPagamento }}
@@ -237,7 +237,7 @@
               </div>
               <div class="card-body">
                 <p class="card-text">
-                  Data: {{ agendamento.data | date : "dd/MM/yyyy HH:mm" }}
+                  Data: {{ getFormatedData(agendamento.data) }}
                 </p>
                 <p class="card-text">
                   Tipo de Pagamento: {{ agendamento.tipoPagamento }}
