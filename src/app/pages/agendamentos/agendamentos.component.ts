@@ -182,6 +182,7 @@ export class AgendamentosComponent implements OnInit {
         this.resetForm();
         this.closeModal.nativeElement.click();
         this.loadAgendamentos();
+        this.loadOldAgendamentos();
         this.toastr.success('Agendamento realizado com sucesso!', 'Sucesso');
       },
       error: (err) => {
@@ -233,6 +234,11 @@ export class AgendamentosComponent implements OnInit {
     this.id = 0;
     this.motivoCancelamento = '';
     this.errors = {};
+    this.filtroFuncionario = this.defaultFuncionario;
+    this.filtroFuncionarioOld = this.defaultFuncionario;
+    this.filtroStatus = '';
+    this.filtroServico = this.defaultServico;
+    this.filtroServicoOld = this.defaultServico;
   }
 
   setErrors(errorPayload: any): void {

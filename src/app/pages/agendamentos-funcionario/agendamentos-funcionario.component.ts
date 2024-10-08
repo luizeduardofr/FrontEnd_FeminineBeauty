@@ -189,6 +189,10 @@ export class AgendamentosFuncionarioComponent implements OnInit {
   private resetForm(): void {
     this.id = 0;
     this.motivoCancelamento = '';
+    this.navigationComponent.resetNavigation();
+    this.filtroServico = this.defaultServico;
+    this.filtroServicoOld = this.defaultServico;
+    this.status = '';
   }
 
   onStatusChange(status: string): void {
