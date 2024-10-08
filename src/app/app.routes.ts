@@ -11,6 +11,7 @@ import { PerfilComponent } from './pages/perfil/perfil.component';
 import { AgendamentosComponent } from './pages/agendamentos/agendamentos.component';
 import { AgendamentosFuncionarioComponent } from './pages/agendamentos-funcionario/agendamentos-funcionario.component';
 import { AgendamentosAdminComponent } from './pages/agendamentos-admin/agendamentos-admin.component';
+import { FaturamentoComponent } from './pages/faturamento/faturamento.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -44,6 +45,10 @@ export const routes: Routes = [
       {
         path: 'agendamentos/admin',
         component: AgendamentosAdminComponent
+      },
+      {
+        path: 'faturamento',
+        component: FaturamentoComponent
       }
     ],
   },

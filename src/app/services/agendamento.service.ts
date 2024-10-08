@@ -171,4 +171,18 @@ export class AgendamentoService {
   concluirAgendamento(id: number): Observable<Agendamento> {
     return this.http.put<Agendamento>(`${this.apiUrl}/concluir`, id);
   }
+
+  getFaturamento(
+    idFuncionario: number,
+    dataInicio: string,
+    dataFim: string
+  ): Observable<Agendamento[]> {
+    return this.http.get<Agendamento[]>(`${this.apiUrl}/faturamento`, {
+      params: {
+      idFuncionario: idFuncionario,
+      dataInicio: dataInicio,
+      dataFim: dataFim,
+      },
+    });
+  }
 }

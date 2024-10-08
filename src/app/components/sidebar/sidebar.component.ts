@@ -29,7 +29,12 @@ const menu = [
     link: '/dashboard/agendamentos/admin',
     name: 'Agendamentos',
     roles: ['admin'],
-  }
+  },
+  {
+    link: '/dashboard/faturamento',
+    name: 'Faturamento',
+    roles: ['admin'],
+  },
 ];
 
 @Component({
