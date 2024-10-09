@@ -20,7 +20,7 @@ export interface CancelamentoAgendamento {
 }
 
 export enum StatusConsulta {
-  PENDENTE,
-  CANCELADO,
-  CONCLUIDO,
+  PENDENTE = "PENDENTE",
+  CANCELADO = "CANCELADO",
+  CONCLUIDO = "CONCLUIDO",
 }

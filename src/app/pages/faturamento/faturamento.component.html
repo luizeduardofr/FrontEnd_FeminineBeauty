@@ -3,56 +3,43 @@
     <div class="col-12">
       <h2 class="mb-4 text-dark">Faturamento</h2>
       <div class="card">
-        <div
-          class="card-header d-flex justify-content-between align-items-center"
-        >
+        <div class="card-header d-flex justify-content-between align-items-center">
           <h3 class="m-0 p-0">Total</h3>
           <div class="d-flex gap-4">
             <div class="form-group d-flex gap-2 align-items-center">
               <label for="funcionarioFilterSelect" class="text-nowrap">
                 Filtrar por Funcionário
               </label>
-              <select
-                id="funcionarioFilterSelect"
-                class="form-select"
-                [(ngModel)]="filtroFuncionario"
-                (ngModelChange)="onFiltroFuncionarioChange($event)"
-              >
-                <option [ngValue]="defaultFuncionario">Todos</option>
-                <option
-                  *ngFor="let funcionario of funcionarios"
-                  [ngValue]="funcionario"
-                >
+              <select id="funcionarioFilterSelect" class="form-select" [(ngModel)]="filtroFuncionario"
+                (ngModelChange)="onFiltroFuncionarioChange($event)">
+                <option [ngValue]="defaultFuncionario" disabled>Selecione</option>
+                <option *ngFor="let funcionario of funcionarios" [ngValue]="funcionario">
                   {{ funcionario.nome }}
                 </option>
               </select>
             </div>
             <div class="form-group d-flex gap-2 align-items-center">
-              <label for="dataFilter" class="text-nowrap"
-                >Filtrar por Data</label
-              >
-              <input
-                type="date"
-                id="dataFilter"
-                class="form-control"
-                [(ngModel)]="filtroDataInicio"
-                (ngModelChange)="onFiltroDataChange($event, filtroDataFim)"
-              />
-              <input
-                type="date"
-                id="dataFilter"
-                class="form-control"
-                [(ngModel)]="filtroDataFim"
-                (ngModelChange)="onFiltroDataChange(filtroDataInicio, $event)"
-              />
+              <label for="dataFilter" class="text-nowrap">Filtrar por Data</label>
+              <input type="date" id="dataFilter" class="form-control" [(ngModel)]="filtroDataInicio"
+                (ngModelChange)="onFiltroDataChange($event, filtroDataFim)" />
+              <input type="date" id="dataFilter" class="form-control" [(ngModel)]="filtroDataFim"
+                (ngModelChange)="onFiltroDataChange(filtroDataInicio, $event)" />
             </div>
           </div>
         </div>
         <div class="card-body row m-0 py-2 px-0">
-          <div *ngIf="totalDia > 0" class="text-center">
-            <h1>Total no Mês: {{ totalDia | currencyBr }}</h1>
+          <div *ngIf="filtroFuncionario!== defaultFuncionario" class="d-flex justify-content-between">
+            <div>
+              <h3>Consultas Concluidas: {{ totalConcluido }}</h3>
+            </div>
+            <div>
+              <h3>Consultas Canceladas: {{ totalCancelado }}</h3>
+            </div>
+            <div>
+              <h3>Total Faturamento: {{ totalDia | currencyBr }}</h3>
+            </div>
           </div>
-          <div *ngIf="totalDia === 0" class="text-center w-100">
+          <div *ngIf="filtroFuncionario === defaultFuncionario">
             <p class="m-2">Selecione um funcionário</p>
           </div>
         </div>

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Funcionario } from '../../models/funcionario';
 import { AgendamentoService } from '../../services/agendamento.service';
 import { NavigationComponent } from '../../components/navigation/navigation.component';
-import { Agendamento } from '../../models/agendamento';
+import { Agendamento, StatusConsulta } from '../../models/agendamento';
 import { ToastrService } from 'ngx-toastr';
 import { FuncionariosService } from '../../services/funcionarios.service';
 import { CurrencyBrPipe } from '../../pipes/currency-br.pipe';
@@ -34,6 +34,8 @@ export class FaturamentoComponent implements OnInit {
   filtroFuncionario: Funcionario = this.defaultFuncionario;
 
   totalDia = 0;
+  totalCancelado = 0;
+  totalConcluido= 0;
 
   constructor(
     private toastr: ToastrService,
@@ -67,7 +69,16 @@ export class FaturamentoComponent implements OnInit {
       this.agendamentoService.getFaturamento(idFuncionario, dataInicio, dataFim).subscribe({
         next: (response) => {
           this.totalDia = response.reduce((acc: number, agendamento: Agendamento) => {
-            return acc + agendamento.servico.preco;
+            if (agendamento.status?.toString() === StatusConsulta.CONCLUIDO.toString()) return acc + agendamento.servico.preco;
+            return acc;
+          }, 0);
+          this.totalCancelado = response.reduce((acc: number, agendamento: Agendamento) => {
+            if (agendamento.status?.toString() === StatusConsulta.CANCELADO.toString()) return acc + 1 ;
+            return acc;
+          }, 0);
+          this.totalConcluido = response.reduce((acc: number, agendamento: Agendamento) => {
+            if (agendamento.status?.toString() === StatusConsulta.CONCLUIDO.toString()) return acc + 1;
+            return acc;
           }, 0);
         },
         error: () =>
